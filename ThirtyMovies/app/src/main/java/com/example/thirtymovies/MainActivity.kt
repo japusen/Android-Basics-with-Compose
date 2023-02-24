@@ -84,9 +84,9 @@ fun MovieGrid(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.padding(4.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(8.dp)
     ) {
         items(movies) { movie ->
             MovieCard(movie = movie)
@@ -99,9 +99,9 @@ fun MovieCard(
     movie: Movie,
     modifier: Modifier = Modifier
 ) {
-    var isPosterVisible by remember { mutableStateOf(false) }
+    var isPosterVisible by remember { mutableStateOf(true) }
     Card(
-        elevation = 8.dp,
+        elevation = 16.dp,
         modifier = Modifier
     ) {
         Box(
@@ -111,7 +111,7 @@ fun MovieCard(
                 .clickable(onClick = { isPosterVisible = !isPosterVisible })
         ) {
             AnimatedVisibility (
-                visible = isPosterVisible,
+                visible = !isPosterVisible,
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
@@ -122,7 +122,7 @@ fun MovieCard(
                 )
             }
             AnimatedVisibility(
-                visible = !isPosterVisible,
+                visible = isPosterVisible,
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
@@ -142,9 +142,9 @@ fun MovieInfo(
     modifier: Modifier = Modifier
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(3.dp),
         modifier = Modifier
-            .padding(8.dp)
+            .padding(6.dp)
     ) {
         Text(
             text = "${movie.title} (${movie.year})",
@@ -169,6 +169,7 @@ fun MovieInfo(
             text = movie.description,
             style = MaterialTheme.typography.h3,
             modifier = Modifier.fillMaxWidth()
+                .fillMaxSize()
         )
     }
 }
