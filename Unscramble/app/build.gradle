@@ -74,4 +74,5 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 
+    testImplementation 'junit:junit:4.13.2'
 }
