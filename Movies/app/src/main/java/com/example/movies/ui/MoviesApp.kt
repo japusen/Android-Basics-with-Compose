@@ -12,7 +12,10 @@ import com.example.movies.R
 import com.example.movies.ui.screens.MoviesViewModel
 
 @Composable
-fun MoviesApp(modifier: Modifier = Modifier) {
+fun MoviesApp(
+    moviesViewModel: MoviesViewModel = viewModel(),
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
@@ -23,7 +26,6 @@ fun MoviesApp(modifier: Modifier = Modifier) {
                 .padding(it),
             color = MaterialTheme.colors.background
         ) {
-            val moviesViewModel: MoviesViewModel = viewModel()
             HomeScreen(moviesUiState = moviesViewModel.moviesUiState)
         }
     }

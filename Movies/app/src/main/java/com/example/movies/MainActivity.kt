@@ -1,17 +1,15 @@
 package com.example.movies
 
-import HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movies.ui.MoviesApp
+import com.example.movies.ui.screens.MoviesViewModel
 import com.example.movies.ui.theme.MoviesTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MoviesApp()
+                    val viewModel: MoviesViewModel = viewModel(factory = MoviesViewModel.Factory)
+                    MoviesApp(viewModel)
                 }
             }
         }
