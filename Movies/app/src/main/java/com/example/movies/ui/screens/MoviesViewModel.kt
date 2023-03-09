@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.movies.MoviesApplication
 import com.example.movies.data.MoviesRepository
+import com.example.movies.model.Movie
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -20,7 +21,7 @@ enum class Filter(val value: String) {
 }
 
 sealed interface MoviesUiState {
-    data class Success(val movies: String) : MoviesUiState
+    data class Success(val movies: List<Movie>) : MoviesUiState
     object Error : MoviesUiState
     object Loading : MoviesUiState
 }
@@ -33,14 +34,14 @@ class MoviesViewModel(
         private set
 
     init {
-        getMovies(Filter.POPULAR.value)
+        getMovies(Filter.TOP_RATED.value)
     }
 
     fun getMovies(filter: String) {
         viewModelScope.launch {
             moviesUiState = try {
-                val movieList = moviesRepository.getMovies(filter)
-                MoviesUiState.Success("Success: ${movieList.size} movies retrieved")
+                val firstMovie = moviesRepository.getMovies(filter)
+                MoviesUiState.Success(firstMovie)
             } catch (e: IOException) {
                 MoviesUiState.Error
             }
