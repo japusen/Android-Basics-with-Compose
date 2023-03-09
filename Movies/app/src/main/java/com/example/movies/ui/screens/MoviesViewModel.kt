@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movies.data.DefaultMoviesRepository
 import com.example.movies.network.MoviesApi
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -33,7 +34,8 @@ class MoviesViewModel : ViewModel() {
     fun getMovies(filter: String) {
         viewModelScope.launch {
             moviesUiState = try {
-                val movieList = MoviesApi.retrofitService.getMovies(filter).results
+                val moviesRepository = DefaultMoviesRepository()
+                val movieList = moviesRepository.getMovies(filter)
                 MoviesUiState.Success("Success: ${movieList.size} movies retrieved")
             } catch (e: IOException) {
                 MoviesUiState.Error
