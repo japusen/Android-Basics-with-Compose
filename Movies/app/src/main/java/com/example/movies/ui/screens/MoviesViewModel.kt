@@ -33,8 +33,8 @@ class MoviesViewModel : ViewModel() {
     fun getMovies(filter: String) {
         viewModelScope.launch {
             moviesUiState = try {
-                val result = MoviesApi.retrofitService.getMovies(filter)
-                MoviesUiState.Success(result)
+                val movieList = MoviesApi.retrofitService.getMovies(filter).results
+                MoviesUiState.Success("Success: ${movieList.size} movies retrieved")
             } catch (e: IOException) {
                 MoviesUiState.Error
             }
