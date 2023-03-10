@@ -1,18 +1,21 @@
 package com.example.movies.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,24 +30,6 @@ import com.example.movies.model.Movie
 // Configuration: https://developers.themoviedb.org/3/configuration/get-api-configuration
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
 private const val IMAGE_SIZE = "w780"
-
-@Composable
-fun MovieTopAppBar(
-    modifier: Modifier = Modifier
-) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp)
-    ) {
-        Text(
-            text = stringResource(com.example.movies.R.string.app_name),
-            fontSize = 24.sp
-        )
-    }
-}
 
 @Composable
 fun MovieGrid(
@@ -68,28 +53,58 @@ fun MovieCard(
     movie: Movie,
     modifier: Modifier = Modifier
 ) {
-    var isPosterVisible by remember { mutableStateOf(true) }
     Card(
         elevation = 16.dp,
-        modifier = Modifier.clickable {  }
+        modifier = Modifier.clickable { }
     ) {
-        Box(
-            modifier = Modifier
-                .height(256.dp)
-                .width(180.dp)
-                .clickable(onClick = { isPosterVisible = !isPosterVisible })
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.posterPath}")
-                    .crossfade(true)
-                    .build(),
-                error = painterResource(R.drawable.ic_broken_image),
-                placeholder = painterResource(R.drawable.loading_img),
-                contentDescription = movie.title,
-                contentScale = ContentScale.FillBounds,
-            )
+        if (movie.posterPath != null) {
+            MoviePoster(movie)
+        } else {
+            MovieNoPoster(movie)
         }
+    }
+}
+
+@Composable
+fun MoviePoster(
+    movie: Movie,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = Modifier
+            .height(256.dp)
+            .width(180.dp)
+    ) {
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.posterPath}")
+                .crossfade(true)
+                .build(),
+            error = painterResource(R.drawable.ic_broken_image),
+            placeholder = painterResource(R.drawable.loading_img),
+            contentDescription = movie.title,
+            contentScale = ContentScale.FillBounds,
+        )
+    }
+}
+
+@Composable
+fun MovieNoPoster(
+    movie: Movie,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .height(256.dp)
+            .width(180.dp)
+            .background(Color.Black)
+    ) {
+        Text(
+            text = "${movie.title} (${movie.releaseDate.slice(0..3)})",
+            style = MaterialTheme.typography.h5,
+            color = Color.White
+        )
     }
 }
 

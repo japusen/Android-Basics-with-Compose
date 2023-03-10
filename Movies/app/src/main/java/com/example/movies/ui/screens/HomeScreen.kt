@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movies.R
-import com.example.movies.ui.screens.MovieCard
 import com.example.movies.ui.screens.MovieGrid
 import com.example.movies.ui.screens.MoviesUiState
 import com.example.movies.ui.theme.MoviesTheme
@@ -23,23 +22,11 @@ fun HomeScreen(
 ) {
     when (moviesUiState) {
         is MoviesUiState.Loading -> LoadingScreen(modifier)
-        is MoviesUiState.Success -> MovieGrid(movies = moviesUiState.movies)
+        is MoviesUiState.Success -> MovieGrid(moviesUiState.movies)
         is MoviesUiState.Error -> ErrorScreen(modifier)
     }
 }
 
-/**
- * The home screen displaying result of fetching photos.
- */
-@Composable
-fun ResultScreen(moviesUiState: String, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Text(moviesUiState)
-    }
-}
 
 /**
  * The home screen displaying the loading message.
@@ -68,13 +55,5 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize()
     ) {
         Text(stringResource(R.string.loading_failed))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ResultScreenPreview() {
-    MoviesTheme {
-        ResultScreen(stringResource(R.string.placeholder_result))
     }
 }

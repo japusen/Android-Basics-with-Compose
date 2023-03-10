@@ -15,11 +15,6 @@ import com.example.movies.model.Movie
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-enum class Filter(val value: String) {
-    TOP_RATED("top_rated"),
-    POPULAR("popular")
-}
-
 sealed interface MoviesUiState {
     data class Success(val movies: List<Movie>) : MoviesUiState
     object Error : MoviesUiState
@@ -30,18 +25,42 @@ sealed interface MoviesUiState {
 class MoviesViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
+
     var moviesUiState: MoviesUiState by mutableStateOf(MoviesUiState.Loading)
         private set
 
+
     init {
-        getMovies(Filter.TOP_RATED.value)
+        searchForMovie("avenge")
     }
 
-    fun getMovies(filter: String) {
+    fun loadTopRatedMovies() {
         viewModelScope.launch {
             moviesUiState = try {
-                val firstMovie = moviesRepository.getMovies(filter)
-                MoviesUiState.Success(firstMovie)
+                val movieList = moviesRepository.getTopRatedMovies()
+                MoviesUiState.Success(movieList)
+            } catch (e: IOException) {
+                MoviesUiState.Error
+            }
+        }
+    }
+
+    fun loadPopularMovies() {
+        viewModelScope.launch {
+            moviesUiState = try {
+                val movieList = moviesRepository.getPopularMovies()
+                MoviesUiState.Success(movieList)
+            } catch (e: IOException) {
+                MoviesUiState.Error
+            }
+        }
+    }
+
+    fun searchForMovie(query: String) {
+        viewModelScope.launch {
+            moviesUiState = try {
+                val movieList = moviesRepository.movieSearch(query)
+                MoviesUiState.Success(movieList)
             } catch (e: IOException) {
                 MoviesUiState.Error
             }
