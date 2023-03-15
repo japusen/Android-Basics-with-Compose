@@ -1,33 +1,71 @@
 package com.example.movies.data
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.movies.model.Movie
 import com.example.movies.network.MoviesApiService
+import kotlinx.coroutines.flow.Flow
 
 
-enum class Filter(val value: String) {
+enum class RequestType(val value: String) {
     TOP_RATED("top_rated"),
-    POPULAR("popular")
+    POPULAR("popular"),
+    SEARCH("search")
 }
 interface MoviesRepository {
-    suspend fun getTopRatedMovies(): List<Movie>
-    suspend fun getPopularMovies(): List<Movie>
-    suspend fun movieSearch(query: String) : List<Movie>
+    fun getTopRatedMovies(): Flow<PagingData<Movie>>
+    fun getPopularMovies(): Flow<PagingData<Movie>>
+    fun movieSearch(query: String) : Flow<PagingData<Movie>>
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 50
+    }
+
 }
 
 class DefaultMoviesRepository(
     private val movieSApiService: MoviesApiService
 ) : MoviesRepository {
 
-    override suspend fun getTopRatedMovies(): List<Movie> {
-        return movieSApiService.getMovies(Filter.TOP_RATED.value).results
+    override fun getTopRatedMovies(): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = MoviesRepository.NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(
+                moviesApiService = movieSApiService,
+                requestType = RequestType.TOP_RATED,
+            ) }
+        ).flow
     }
 
-    override suspend fun getPopularMovies(): List<Movie> {
-        return movieSApiService.getMovies(Filter.POPULAR.value).results
+    override fun getPopularMovies(): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = MoviesRepository.NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(
+                moviesApiService = movieSApiService,
+                requestType = RequestType.POPULAR,
+            ) }
+        ).flow
     }
 
-    override suspend fun movieSearch(query: String): List<Movie> {
-        return movieSApiService.movieSearch(query).results
+    override fun movieSearch(query: String): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = MoviesRepository.NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(
+                moviesApiService = movieSApiService,
+                requestType = RequestType.SEARCH,
+                query = query
+            ) }
+        ).flow
     }
 
 }

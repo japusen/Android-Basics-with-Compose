@@ -9,14 +9,16 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.paging.PagingData
 import com.example.movies.MoviesApplication
 import com.example.movies.data.MoviesRepository
 import com.example.movies.model.Movie
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 sealed interface MoviesUiState {
-    data class Success(val movies: List<Movie>) : MoviesUiState
+    data class Success(val movies: Flow<PagingData<Movie>>) : MoviesUiState
     object Error : MoviesUiState
     object Loading : MoviesUiState
 }
@@ -31,7 +33,7 @@ class MoviesViewModel(
 
 
     init {
-        searchForMovie("avenge")
+        loadPopularMovies()
     }
 
     fun loadTopRatedMovies() {

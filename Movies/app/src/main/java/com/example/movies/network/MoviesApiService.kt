@@ -9,14 +9,15 @@ import retrofit2.http.Query
 private const val API_KEY = "d75b819562c1b230a42cb36cd1022dfd"
 
 interface MoviesApiService {
-    @GET("movie/{filter}?api_key=$API_KEY")
+    @GET("movie/{type}?api_key=$API_KEY")
     suspend fun getMovies(
-        @Path("filter") filter: String
+        @Path("type") type: String,
+        @Query("page") page: Int
     ): MovieList
 
     @GET("search/movie?api_key=$API_KEY")
     suspend fun movieSearch(
         @Query("query") query: String,
-        @Query("include_adult") adult: Boolean = false
+        @Query("page") page: Int
     ) : MovieList
 }
