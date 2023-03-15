@@ -12,17 +12,17 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movies.R
 import com.example.movies.ui.screens.MovieGrid
-import com.example.movies.ui.screens.MoviesUiState
+import com.example.movies.ui.screens.RepoRequestState
 
 @Composable
 fun HomeScreen(
-    moviesUiState: MoviesUiState,
+    repoRequestState: RepoRequestState,
     modifier: Modifier = Modifier
 ) {
-    when (moviesUiState) {
-        is MoviesUiState.Loading -> LoadingScreen(modifier)
-        is MoviesUiState.Success -> MovieGrid(moviesUiState.movies.collectAsLazyPagingItems())
-        is MoviesUiState.Error -> ErrorScreen(modifier)
+    when (repoRequestState) {
+        is RepoRequestState.Loading -> LoadingScreen(modifier)
+        is RepoRequestState.Success -> MovieGrid(repoRequestState.movies.collectAsLazyPagingItems())
+        is RepoRequestState.Error -> ErrorScreen(modifier)
     }
 }
 

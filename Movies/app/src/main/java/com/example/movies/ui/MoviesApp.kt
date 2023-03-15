@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movies.R
 import com.example.movies.ui.screens.MoviesViewModel
 
@@ -31,7 +30,7 @@ fun MoviesApp(
                 .padding(it),
             color = MaterialTheme.colors.background
         ) {
-            HomeScreen(moviesUiState = moviesViewModel.moviesUiState)
+            HomeScreen(repoRequestState = moviesViewModel.repoRequestState)
         }
     }
 }

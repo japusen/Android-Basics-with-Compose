@@ -69,6 +69,7 @@ fun MoviePoster(
     modifier: Modifier = Modifier
 ) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .height(256.dp)
     ) {

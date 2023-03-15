@@ -17,10 +17,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-sealed interface MoviesUiState {
-    data class Success(val movies: Flow<PagingData<Movie>>) : MoviesUiState
-    object Error : MoviesUiState
-    object Loading : MoviesUiState
+sealed interface RepoRequestState {
+    data class Success(val movies: Flow<PagingData<Movie>>) : RepoRequestState
+    object Error : RepoRequestState
+    object Loading : RepoRequestState
 }
 
 
@@ -28,44 +28,38 @@ class MoviesViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    var moviesUiState: MoviesUiState by mutableStateOf(MoviesUiState.Loading)
+    var repoRequestState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
         private set
 
 
     init {
-        searchForMovie("space")
+        loadTopRatedMovies()
     }
 
     fun loadTopRatedMovies() {
-        viewModelScope.launch {
-            moviesUiState = try {
-                val movieList = moviesRepository.getTopRatedMovies()
-                MoviesUiState.Success(movieList)
-            } catch (e: IOException) {
-                MoviesUiState.Error
-            }
+        repoRequestState = try {
+            val movieList = moviesRepository.getTopRatedMovies()
+            RepoRequestState.Success(movieList)
+        } catch (e: IOException) {
+            RepoRequestState.Error
         }
     }
 
     fun loadPopularMovies() {
-        viewModelScope.launch {
-            moviesUiState = try {
-                val movieList = moviesRepository.getPopularMovies()
-                MoviesUiState.Success(movieList)
-            } catch (e: IOException) {
-                MoviesUiState.Error
-            }
+        repoRequestState = try {
+            val movieList = moviesRepository.getPopularMovies()
+            RepoRequestState.Success(movieList)
+        } catch (e: IOException) {
+            RepoRequestState.Error
         }
     }
 
     fun searchForMovie(query: String) {
-        viewModelScope.launch {
-            moviesUiState = try {
-                val movieList = moviesRepository.movieSearch(query)
-                MoviesUiState.Success(movieList)
-            } catch (e: IOException) {
-                MoviesUiState.Error
-            }
+        repoRequestState = try {
+            val movieList = moviesRepository.movieSearch(query)
+            RepoRequestState.Success(movieList)
+        } catch (e: IOException) {
+            RepoRequestState.Error
         }
     }
 
