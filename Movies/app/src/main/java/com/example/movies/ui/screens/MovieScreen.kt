@@ -15,9 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movies.R
@@ -34,10 +34,10 @@ fun MovieGrid(
 ) {
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(128.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier.padding(8.dp)
     ) {
         items(movies.itemCount) { index ->
             MovieCard(movie = movies[index]!!)
@@ -52,12 +52,13 @@ fun MovieCard(
 ) {
     Card(
         elevation = 16.dp,
-        modifier = Modifier.clickable { }
+        modifier = modifier
+            .clickable { }
     ) {
         if (movie.posterPath != null) {
             MoviePoster(movie)
         } else {
-            MovieNoPoster(movie)
+            MovieNoPoster(movie, modifier)
         }
     }
 }
@@ -68,9 +69,8 @@ fun MoviePoster(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(256.dp)
-            .width(180.dp)
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -92,13 +92,16 @@ fun MovieNoPoster(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .height(256.dp)
-            .width(180.dp)
+        modifier = modifier
             .background(Color.Black)
+            .height(256.dp)
     ) {
         Text(
-            text = "${movie.title} (${movie.releaseDate.slice(0..3)})",
+            text = if (movie.releaseDate.isNotEmpty())
+                "${movie.title} (${movie.releaseDate.slice(0..3)})"
+            else
+                movie.title,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.h5,
             color = Color.White
         )
@@ -112,7 +115,7 @@ fun MovieDetail(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(3.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(6.dp)
     ) {
         Text(
@@ -122,13 +125,13 @@ fun MovieDetail(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             Text(
                 text = "Votes: ${movie.vote_count}",
                 style = MaterialTheme.typography.h3
             )
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = modifier.weight(1f))
             Text(
                 text = "Score: ${movie.voteAverage} / 10",
                 style = MaterialTheme.typography.h3
@@ -137,7 +140,7 @@ fun MovieDetail(
         Text(
             text = movie.overview,
             style = MaterialTheme.typography.h3,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .fillMaxSize()
         )

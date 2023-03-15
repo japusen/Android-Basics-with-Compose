@@ -33,7 +33,7 @@ class MoviesViewModel(
 
 
     init {
-        loadPopularMovies()
+        searchForMovie("space")
     }
 
     fun loadTopRatedMovies() {
