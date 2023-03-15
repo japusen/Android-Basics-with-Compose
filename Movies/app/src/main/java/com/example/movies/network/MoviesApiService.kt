@@ -12,12 +12,14 @@ interface MoviesApiService {
     @GET("movie/{type}?api_key=$API_KEY")
     suspend fun getMovies(
         @Path("type") type: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("adult") adult: Boolean = false
     ): MovieList
 
     @GET("search/movie?api_key=$API_KEY")
     suspend fun movieSearch(
         @Query("query") query: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("adult") adult: Boolean = false
     ) : MovieList
 }
