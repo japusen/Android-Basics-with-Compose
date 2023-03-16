@@ -9,5 +9,6 @@ data class MoviesUiState(
     val previousQuery: String = "",
     val query: String = "",
     val requestType: RequestType = RequestType.TOP_RATED,
-    val searchState: Boolean = false
+    val searchState: Boolean = false,
+    val menuVisible: Boolean = false,
 )

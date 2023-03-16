@@ -4,4 +4,5 @@
     <string name="loading">loading</string>
     <string name="loading_failed">Failed to load</string>
     <string name="search">Search</string>
+    <string name="search_hint">Search for movies</string>
 </resources>

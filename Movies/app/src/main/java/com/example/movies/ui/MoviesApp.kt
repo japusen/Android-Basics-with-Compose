@@ -1,6 +1,7 @@
 package com.example.movies.ui
 
 import HomeScreen
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
@@ -64,17 +66,34 @@ fun MovieTopAppBar(
             },
             onSearchStarted = {
                 moviesViewModel.updatePreviousQuery(uiState.query)
+                moviesViewModel.updateQuery("")
                 moviesViewModel.updateRequestType(RequestType.SEARCH)
                 moviesViewModel.updateSearchState()
                 moviesViewModel.searchForMovie()
-                moviesViewModel.updateQuery("")
             }
         )
     else
         TitleBar(
             query = uiState.previousQuery,
             requestType = uiState.requestType,
-            onSearchClicked = { moviesViewModel.updateSearchState() }
+            onSearchClicked = { moviesViewModel.updateSearchState() },
+            menuVisible = uiState.menuVisible,
+            onMenuClicked = { moviesViewModel.updateMenuVisible(true) },
+            onMenuDismissed = { moviesViewModel.updateMenuVisible(false) },
+            onTopRatedClicked = {
+                if (uiState.requestType != RequestType.TOP_RATED) {
+                    moviesViewModel.loadTopRatedMovies()
+                    moviesViewModel.updateRequestType(RequestType.TOP_RATED)
+                }
+                moviesViewModel.updateMenuVisible(false)
+            },
+            onPopularClicked = {
+                if (uiState.requestType != RequestType.POPULAR) {
+                    moviesViewModel.loadPopularMovies()
+                    moviesViewModel.updateRequestType(RequestType.POPULAR)
+                }
+                moviesViewModel.updateMenuVisible(false)
+            }
         )
 }
 
@@ -83,6 +102,11 @@ fun TitleBar(
     query: String,
     requestType: RequestType,
     onSearchClicked: () -> Unit,
+    menuVisible: Boolean,
+    onMenuClicked: () -> Unit,
+    onMenuDismissed: () -> Unit,
+    onTopRatedClicked: () -> Unit,
+    onPopularClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -102,12 +126,62 @@ fun TitleBar(
 //            }
 //        },
         actions = {
-            SearchButton(
-                onSearch = onSearchClicked
+            IconButton(onClick = { onSearchClicked() }) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = stringResource(R.string.search),
+                )
+            }
+            DropdownMenu(
+                visible = menuVisible,
+                onMenuClicked = onMenuClicked,
+                onDismissed = onMenuDismissed,
+                onTopRatedClicked = onTopRatedClicked,
+                onPopularClicked= onPopularClicked,
             )
         },
         elevation = 8.dp
     )
+}
+
+@Composable
+fun DropdownMenu(
+    visible: Boolean,
+    onMenuClicked: () -> Unit,
+    onDismissed: () -> Unit,
+    onTopRatedClicked: () -> Unit,
+    onPopularClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    // Creating Icon button for dropdown menu
+    IconButton(
+        onClick = { onMenuClicked() }
+    ) {
+        Icon(Icons.Default.MoreVert, "")
+    }
+
+    // Creating a dropdown menu
+    DropdownMenu(
+        expanded = visible,
+        onDismissRequest = { onDismissed() }
+    ) {
+
+        // Creating dropdown menu item, on click
+        // would create a Toast message
+        DropdownMenuItem(
+            onClick = { onTopRatedClicked() }
+        ) {
+            Text(text = "Top Rated")
+        }
+
+        // Creating dropdown menu item, on click
+        // would create a Toast message
+        DropdownMenuItem(
+            onClick = { onPopularClicked() }
+        ) {
+            Text(text = "Popular")
+        }
+    }
 }
 
 @Composable
@@ -134,7 +208,7 @@ fun SearchBar(
                 Text(
                     modifier = Modifier
                         .alpha(ContentAlpha.medium),
-                    text = "Search for movies",
+                    text = stringResource(R.string.search_hint),
                     color = MaterialTheme.colors.onPrimary
                 )
             },
@@ -151,7 +225,7 @@ fun SearchBar(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Go Back",
-                        tint = Color.White
+                        tint = MaterialTheme.colors.onPrimary,
                     )
                 }
             },
@@ -164,7 +238,7 @@ fun SearchBar(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Clear Text",
-                        tint = Color.White
+                        tint = MaterialTheme.colors.onPrimary
                     )
                 }
             },
@@ -178,19 +252,5 @@ fun SearchBar(
                 backgroundColor = Color.Transparent,
                 cursorColor = Color.White.copy(alpha = ContentAlpha.medium)
             ))
-    }
-}
-
-
-@Composable
-fun SearchButton(
-    onSearch: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconButton(onClick = { onSearch() }) {
-        Icon(
-            imageVector = Icons.Rounded.Search,
-            contentDescription = stringResource(R.string.search),
-        )
     }
 }

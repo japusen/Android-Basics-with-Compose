@@ -58,6 +58,14 @@ class MoviesViewModel(
         }
     }
 
+    fun updateMenuVisible(visible: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                menuVisible = visible
+            )
+        }
+    }
+
     fun updateSearchState() {
         _uiState.update { currentState ->
             currentState.copy(
@@ -85,7 +93,7 @@ class MoviesViewModel(
 
     fun searchForMovie() {
         repoRequestState = try {
-            val query = uiState.value.query.trimStart().trimEnd().toLowerCase(Locale.current)
+            val query = uiState.value.previousQuery
             val movieList = moviesRepository.movieSearch(query)
             RepoRequestState.Success(movieList)
         } catch (e: IOException) {
