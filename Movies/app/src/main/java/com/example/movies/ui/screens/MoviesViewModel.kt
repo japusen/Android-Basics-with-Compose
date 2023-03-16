@@ -2,26 +2,22 @@ package com.example.movies.ui.screens
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.paging.PagingData
 import com.example.movies.MoviesApplication
 import com.example.movies.data.MoviesRepository
+import com.example.movies.data.RequestType
 import com.example.movies.model.Movie
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 import java.io.IOException
-
-sealed interface RepoRequestState {
-    data class Success(val movies: Flow<PagingData<Movie>>) : RepoRequestState
-    object Error : RepoRequestState
-    object Loading : RepoRequestState
-}
 
 
 class MoviesViewModel(
@@ -31,10 +27,43 @@ class MoviesViewModel(
     var repoRequestState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
         private set
 
+    private val _uiState = MutableStateFlow(MoviesUiState())
+    val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
 
     init {
         loadTopRatedMovies()
     }
+
+    fun updatePreviousQuery(query: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                previousQuery = query.trimStart().trimEnd().toLowerCase(Locale.current)
+            )
+        }
+    }
+
+    fun updateQuery(newQuery: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                query = newQuery
+            )
+        }
+    }
+
+    fun updateRequestType(newRequest: RequestType) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                requestType = newRequest
+            )
+        }
+    }
+
+    fun updateSearchState() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                searchState = !uiState.value.searchState
+            )
+        }    }
 
     fun loadTopRatedMovies() {
         repoRequestState = try {
@@ -54,8 +83,9 @@ class MoviesViewModel(
         }
     }
 
-    fun searchForMovie(query: String) {
+    fun searchForMovie() {
         repoRequestState = try {
+            val query = uiState.value.query.trimStart().trimEnd().toLowerCase(Locale.current)
             val movieList = moviesRepository.movieSearch(query)
             RepoRequestState.Success(movieList)
         } catch (e: IOException) {
