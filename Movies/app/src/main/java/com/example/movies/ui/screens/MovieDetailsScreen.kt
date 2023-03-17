@@ -1,14 +1,15 @@
 package com.example.movies.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -25,7 +26,9 @@ private const val IMAGE_SIZE = "w780"
 @Composable
 fun MovieDetail(
     movie: Movie?,
-    modifier: Modifier = Modifier
+    onBackPressed: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false
 ) {
     Card(
         elevation = 16.dp,
@@ -71,6 +74,23 @@ fun MovieDetail(
                     textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(16.dp)
                 )
+
+
+                if (isFullScreen) {
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = onBackPressed,
+                        modifier = Modifier
+                            .padding(start = 8.dp, bottom = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = stringResource(R.string.go_back),
+                            tint = MaterialTheme.colors.onSurface
+                        )
+                    }
+                }
             }
         }
     }

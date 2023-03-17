@@ -37,13 +37,13 @@ fun MovieTopAppBar(
                 moviesViewModel.updateQuery(text) },
             onArrowBackClicked = {
                 moviesViewModel.updateQuery("")
-                moviesViewModel.updateIsShowingSearchResults()
+                moviesViewModel.setIsShowingSearchResults()
             },
             onSearchStarted = {
                 moviesViewModel.updatePreviousQuery(uiState.query)
                 moviesViewModel.updateQuery("")
                 moviesViewModel.updateRequestType(RequestType.SEARCH)
-                moviesViewModel.updateIsShowingSearchResults()
+                moviesViewModel.setIsShowingSearchResults()
                 moviesViewModel.searchForMovie()
             }
         )
@@ -51,23 +51,23 @@ fun MovieTopAppBar(
         TitleBar(
             query = uiState.previousQuery,
             requestType = uiState.requestType,
-            onSearchClicked = { moviesViewModel.updateIsShowingSearchResults() },
+            onSearchClicked = { moviesViewModel.setIsShowingSearchResults() },
             menuVisible = uiState.menuVisible,
-            onMenuClicked = { moviesViewModel.updateMenuVisible(true) },
-            onMenuDismissed = { moviesViewModel.updateMenuVisible(false) },
+            onMenuClicked = { moviesViewModel.setMenuVisible(true) },
+            onMenuDismissed = { moviesViewModel.setMenuVisible(false) },
             onTopRatedClicked = {
                 if (uiState.requestType != RequestType.TOP_RATED) {
                     moviesViewModel.loadTopRatedMovies()
                     moviesViewModel.updateRequestType(RequestType.TOP_RATED)
                 }
-                moviesViewModel.updateMenuVisible(false)
+                moviesViewModel.setMenuVisible(false)
             },
             onPopularClicked = {
                 if (uiState.requestType != RequestType.POPULAR) {
                     moviesViewModel.loadPopularMovies()
                     moviesViewModel.updateRequestType(RequestType.POPULAR)
                 }
-                moviesViewModel.updateMenuVisible(false)
+                moviesViewModel.setMenuVisible(false)
             }
         )
 }

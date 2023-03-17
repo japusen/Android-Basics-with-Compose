@@ -1,3 +1,5 @@
+package com.example.movies.ui.screens
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -5,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.movies.model.Movie
-import com.example.movies.ui.screens.*
 import com.example.movies.ui.utils.ContentType
 import com.example.movies.ui.utils.NavigationType
 
@@ -17,6 +18,7 @@ fun HomeScreen(
     movieListState: RepoRequestState,
     searchResultsState: RepoRequestState,
     onMovieCardPressed: (Movie) -> Unit,
+    onDetailScreenBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -34,7 +36,9 @@ fun HomeScreen(
         if (uiState.isShowingMovieDetail) {
             // Detail Screen
             MovieDetail(
-                movie = uiState.currentSelectedMovie
+                movie = uiState.currentSelectedMovie,
+                onBackPressed = onDetailScreenBackPressed,
+                isFullScreen = true,
             )
         } else {
             // Grid Screen

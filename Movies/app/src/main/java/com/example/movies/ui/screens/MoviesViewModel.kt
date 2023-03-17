@@ -59,7 +59,7 @@ class MoviesViewModel(
         }
     }
 
-    fun updateMenuVisible(visible: Boolean) {
+    fun setMenuVisible(visible: Boolean) {
         _uiState.update { currentState ->
             currentState.copy(
                 menuVisible = visible
@@ -67,7 +67,7 @@ class MoviesViewModel(
         }
     }
 
-    fun updateIsShowingSearchResults() {
+    fun setIsShowingSearchResults() {
         _uiState.update { currentState ->
             currentState.copy(
                 isShowingSearchResults = !uiState.value.isShowingSearchResults
@@ -75,7 +75,7 @@ class MoviesViewModel(
         }
     }
 
-    fun updateCurrentMovie(movie: Movie) {
+    fun setCurrentMovie(movie: Movie) {
         _uiState.update { currentState ->
             currentState.copy(
                 currentSelectedMovie = movie
@@ -83,10 +83,10 @@ class MoviesViewModel(
         }
     }
 
-    fun updateIsShowingMovieDetail() {
+    fun setIsShowingMovieDetail(bool: Boolean) {
         _uiState.update { currentState ->
             currentState.copy(
-                isShowingMovieDetail = !uiState.value.isShowingMovieDetail
+                isShowingMovieDetail = bool
             )
         }
     }

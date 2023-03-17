@@ -1,11 +1,11 @@
 package com.example.movies.ui
 
-import HomeScreen
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.example.movies.model.Movie
+import com.example.movies.ui.screens.HomeScreen
 import com.example.movies.ui.screens.MoviesViewModel
 import com.example.movies.ui.utils.ContentType
 import com.example.movies.ui.utils.NavigationType
@@ -50,9 +50,10 @@ fun MoviesApp(
         movieListState = movieListState,
         searchResultsState = searchResultsState,
         onMovieCardPressed = { movie: Movie ->
-            moviesViewModel.updateCurrentMovie(movie)
-            moviesViewModel.updateIsShowingMovieDetail()
+            moviesViewModel.setCurrentMovie(movie)
+            moviesViewModel.setIsShowingMovieDetail(true)
         },
+        onDetailScreenBackPressed = { moviesViewModel.setIsShowingMovieDetail(false) },
         modifier = modifier
     )
 }
