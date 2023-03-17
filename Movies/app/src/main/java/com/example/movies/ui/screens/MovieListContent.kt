@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -32,49 +34,37 @@ private const val IMAGE_SIZE = "w780"
 
 @Composable
 fun MovieListOnlyContent(
-    movieState: RepoRequestState,
+    movies: LazyPagingItems<Movie>,
+    gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (movieState) {
-        is RepoRequestState.Loading -> LoadingScreen(modifier)
-        is RepoRequestState.Success -> MovieGrid(
-            movies = movieState.movies.collectAsLazyPagingItems(),
-            onMovieCardPressed = onMovieCardPressed
-        )
-        is RepoRequestState.Error -> ErrorScreen(modifier)
-    }
+    MovieGrid(
+        movies = movies,
+        gridState = gridState,
+        onMovieCardPressed = onMovieCardPressed
+    )
 }
 
 @Composable
 fun MovieListAndDetailContent(
     uiState: MoviesUiState,
-    movieState: RepoRequestState,
+    movies: LazyPagingItems<Movie>,
+    gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
-        when (movieState) {
-            is RepoRequestState.Loading -> LoadingScreen(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 16.dp, top = 20.dp))
-            is RepoRequestState.Success -> MovieGrid(
-                movies = movieState.movies.collectAsLazyPagingItems(),
-                onMovieCardPressed = onMovieCardPressed,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 16.dp, top = 20.dp)
-            )
-            is RepoRequestState.Error -> ErrorScreen(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 16.dp, top = 20.dp))
-        }
+        MovieGrid(
+            movies = movies,
+            gridState = gridState,
+            onMovieCardPressed = onMovieCardPressed,
+            modifier = Modifier.weight(1f)
+        )
 
         MovieDetail(
             movie = uiState.currentSelectedMovie,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         )
     }
 }
@@ -112,10 +102,12 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
 @Composable
 fun MovieGrid(
     movies: LazyPagingItems<Movie>,
+    gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
+        state = gridState,
         columns = GridCells.Adaptive(128.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),

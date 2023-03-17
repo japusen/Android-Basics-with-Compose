@@ -1,6 +1,10 @@
 package com.example.movies.ui.screens
 
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -33,7 +37,8 @@ fun MovieDetail(
     Card(
         elevation = 16.dp,
         modifier = modifier
-            .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp)
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Column(
             modifier = modifier

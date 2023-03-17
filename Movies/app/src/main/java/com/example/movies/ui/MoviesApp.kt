@@ -1,9 +1,12 @@
 package com.example.movies.ui
 
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.movies.data.RequestType
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.HomeScreen
 import com.example.movies.ui.screens.MoviesViewModel
@@ -18,8 +21,14 @@ fun MoviesApp(
 ) {
 
     val uiState = moviesViewModel.uiState.collectAsState().value
-    val movieListState = moviesViewModel.movieListState
-    val searchResultsState = moviesViewModel.searchResultsState
+
+    val movieList = if (uiState.requestType == RequestType.TOP_RATED)
+                        moviesViewModel.topRatedMoviesState.collectAsLazyPagingItems()
+                    else
+                        moviesViewModel.popularMoviesState.collectAsLazyPagingItems()
+
+    val searchResults = moviesViewModel.searchResultsState?.collectAsLazyPagingItems()
+
 
     val navigationType: NavigationType
     val contentType: ContentType
@@ -39,7 +48,7 @@ fun MoviesApp(
         }
         else -> {
             navigationType = NavigationType.BOTTOM_NAVIGATION
-            contentType = ContentType.LIST_ONLY
+            contentType = ContentType.LIST_AND_DETAIL
         }
     }
 
@@ -47,8 +56,9 @@ fun MoviesApp(
         navigationType = navigationType,
         contentType = contentType,
         uiState = uiState,
-        movieListState = movieListState,
-        searchResultsState = searchResultsState,
+        movieList = movieList,
+        gridState = rememberLazyGridState(),
+        searchResults = searchResults,
         onMovieCardPressed = { movie: Movie ->
             moviesViewModel.setCurrentMovie(movie)
             moviesViewModel.setIsShowingMovieDetail(true)

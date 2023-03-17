@@ -1,5 +1,8 @@
 package com.example.movies.ui.screens
 
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,8 +11,11 @@ import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.movies.MoviesApplication
 import com.example.movies.data.MoviesRepository
 import com.example.movies.data.RequestType
@@ -22,11 +28,10 @@ class MoviesViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    var movieListState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
-        private set
+    lateinit var topRatedMoviesState: Flow<PagingData<Movie>>
+    lateinit var popularMoviesState: Flow<PagingData<Movie>>
 
-    var searchResultsState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
-        private set
+    var searchResultsState: Flow<PagingData<Movie>>? = null
 
     private val _uiState = MutableStateFlow(MoviesUiState())
     val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
@@ -92,31 +97,16 @@ class MoviesViewModel(
     }
 
     fun loadTopRatedMovies() {
-        movieListState = try {
-            val movieList = moviesRepository.getTopRatedMovies()
-            RepoRequestState.Success(movieList)
-        } catch (e: IOException) {
-            RepoRequestState.Error
-        }
+        topRatedMoviesState = moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
     }
 
     fun loadPopularMovies() {
-        movieListState = try {
-            val movieList = moviesRepository.getPopularMovies()
-            RepoRequestState.Success(movieList)
-        } catch (e: IOException) {
-            RepoRequestState.Error
-        }
+        popularMoviesState = moviesRepository.getPopularMovies().cachedIn(viewModelScope)
     }
 
     fun searchForMovie() {
-        searchResultsState = try {
-            val query = uiState.value.previousQuery
-            val movieList = moviesRepository.movieSearch(query)
-            RepoRequestState.Success(movieList)
-        } catch (e: IOException) {
-            RepoRequestState.Error
-        }
+        val query = uiState.value.previousQuery
+        searchResultsState = moviesRepository.movieSearch(query).cachedIn(viewModelScope)
     }
 
     companion object {
