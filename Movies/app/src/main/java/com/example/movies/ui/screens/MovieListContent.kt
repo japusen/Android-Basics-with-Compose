@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -22,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movies.R
@@ -34,7 +32,7 @@ private const val IMAGE_SIZE = "w780"
 
 @Composable
 fun MovieListOnlyContent(
-    movies: LazyPagingItems<Movie>,
+    movies: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
@@ -49,7 +47,7 @@ fun MovieListOnlyContent(
 @Composable
 fun MovieListAndDetailContent(
     uiState: MoviesUiState,
-    movies: LazyPagingItems<Movie>,
+    movies: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
@@ -63,45 +61,15 @@ fun MovieListAndDetailContent(
         )
 
         MovieDetail(
-            movie = uiState.currentSelectedMovie,
+            movie = uiState.selectedMovie,
             modifier = Modifier.weight(1f)
         )
     }
 }
 
-/**
- * The home screen displaying the loading message.
- */
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Image(
-            modifier = Modifier.size(200.dp),
-            painter = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.loading)
-        )
-    }
-}
-
-/**
- * The home screen displaying error message
- */
-@Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Text(stringResource(R.string.loading_failed))
-    }
-}
-
 @Composable
 fun MovieGrid(
-    movies: LazyPagingItems<Movie>,
+    movies: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
@@ -113,11 +81,13 @@ fun MovieGrid(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.padding(8.dp)
     ) {
-        items(movies.itemCount) { index ->
-            MovieCard(
-                movie = movies[index]!!,
-                onMovieCardPressed = onMovieCardPressed
-            )
+        if (movies != null) {
+            items(movies.itemCount) { index ->
+                MovieCard(
+                    movie = movies[index]!!,
+                    onMovieCardPressed = onMovieCardPressed
+                )
+            }
         }
     }
 }

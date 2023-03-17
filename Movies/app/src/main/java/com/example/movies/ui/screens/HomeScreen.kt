@@ -17,10 +17,10 @@ fun HomeScreen(
     navigationType: NavigationType,
     contentType: ContentType,
     uiState: MoviesUiState,
-    movieList: LazyPagingItems<Movie>,
+    movieList: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
-    searchResults: LazyPagingItems<Movie>?,
     onMovieCardPressed: (Movie) -> Unit,
+    onTabPressed: (Int) -> Unit,
     onDetailScreenBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -33,14 +33,14 @@ fun HomeScreen(
             uiState = uiState,
             movieList = movieList,
             gridState = gridState,
-            searchResults = searchResults,
-            onMovieCardPressed = onMovieCardPressed
+            onMovieCardPressed = onMovieCardPressed,
+            onTabPressed = onTabPressed
         )
     } else {
         if (uiState.isShowingMovieDetail) {
             // Detail Screen
             MovieDetail(
-                movie = uiState.currentSelectedMovie,
+                movie = uiState.selectedMovie,
                 onBackPressed = onDetailScreenBackPressed,
                 isFullScreen = true,
             )
@@ -52,8 +52,8 @@ fun HomeScreen(
                 uiState = uiState,
                 movieList = movieList,
                 gridState = gridState,
-                searchResults = searchResults,
-                onMovieCardPressed = onMovieCardPressed
+                onMovieCardPressed = onMovieCardPressed,
+                onTabPressed = onTabPressed
             )
         }
     }
@@ -64,16 +64,19 @@ private fun AppContent(
     navigationType: NavigationType,
     contentType: ContentType,
     uiState: MoviesUiState,
-    movieList: LazyPagingItems<Movie>,
+    movieList: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
-    searchResults: LazyPagingItems<Movie>?,
     onMovieCardPressed: (Movie) -> Unit,
+    onTabPressed: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
             // Navigation Content
-            MoviesNavRail()
+            MoviesNavRail(
+                uiState = uiState,
+                onTabPressed = onTabPressed
+            )
         }
 
         Column (
@@ -83,7 +86,10 @@ private fun AppContent(
 
             AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
                 // Navigation Content
-                MoviesTabRow()
+                MoviesTabRow(
+                    uiState = uiState,
+                    onTabPressed = onTabPressed
+                )
             }
 
             if (contentType == ContentType.LIST_AND_DETAIL) {

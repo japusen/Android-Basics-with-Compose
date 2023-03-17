@@ -11,6 +11,7 @@ import com.example.movies.data.RequestType
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.HomeScreen
 import com.example.movies.ui.screens.MoviesViewModel
+import com.example.movies.ui.screens.TAB
 import com.example.movies.ui.utils.ContentType
 import com.example.movies.ui.utils.NavigationType
 
@@ -23,13 +24,14 @@ fun MoviesApp(
 
     val uiState = moviesViewModel.uiState.collectAsState().value
 
-    val movieList = if (uiState.requestType == RequestType.TOP_RATED)
-                        moviesViewModel.topRatedMoviesState.collectAsLazyPagingItems()
-                    else
-                        moviesViewModel.popularMoviesState.collectAsLazyPagingItems()
-
-    val searchResults = moviesViewModel.searchResultsState?.collectAsLazyPagingItems()
-
+    val movieList = when(uiState.selectedTab) {
+        TAB.TOP_RATED.num ->
+            uiState.topRatedMovies.collectAsLazyPagingItems()
+        TAB.POPULAR.num ->
+            uiState.popularMovies.collectAsLazyPagingItems()
+        else ->
+            uiState.searchResults?.collectAsLazyPagingItems()
+    }
 
     val navigationType: NavigationType
     val contentType: ContentType
@@ -63,10 +65,19 @@ fun MoviesApp(
         uiState = uiState,
         movieList = movieList,
         gridState = rememberLazyGridState(),
-        searchResults = searchResults,
         onMovieCardPressed = { movie: Movie ->
             moviesViewModel.setCurrentMovie(movie)
             moviesViewModel.setIsShowingMovieDetail(true)
+        },
+        onTabPressed = { num: Int ->
+            if (num != uiState.selectedTab) {
+                moviesViewModel.setSelectedTab(num)
+                when (num) {
+                    TAB.TOP_RATED.num -> moviesViewModel.loadTopRatedMovies()
+                    TAB.POPULAR.num -> moviesViewModel.loadPopularMovies()
+                    TAB.SEARCH.num -> { /* TODO */ }
+                }
+            }
         },
         onDetailScreenBackPressed = { moviesViewModel.setIsShowingMovieDetail(false) },
         modifier = modifier

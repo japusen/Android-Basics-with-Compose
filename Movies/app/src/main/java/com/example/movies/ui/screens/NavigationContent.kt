@@ -11,14 +11,16 @@ import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun MoviesTabRow (
+    uiState: MoviesUiState,
+    onTabPressed: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     TabRow(
-        selectedTabIndex = 0,
+        selectedTabIndex = uiState.selectedTab,
     ) {
         Tab(
-            selected = true,
-            onClick = { },
+            selected = uiState.selectedTab == TAB.TOP_RATED.num,
+            onClick = { onTabPressed(TAB.TOP_RATED.num) },
             text = {
                 Text(
                     text = "Top Rated",
@@ -28,8 +30,8 @@ fun MoviesTabRow (
             }
         )
         Tab(
-            selected = false,
-            onClick = { },
+            selected = uiState.selectedTab == TAB.POPULAR.num,
+            onClick = { onTabPressed(TAB.POPULAR.num) },
             text = {
                 Text(
                     text = "Popular",
@@ -39,8 +41,8 @@ fun MoviesTabRow (
             }
         )
         Tab(
-            selected = false,
-            onClick = { },
+            selected = uiState.selectedTab == TAB.SEARCH.num,
+            onClick = { onTabPressed(TAB.SEARCH.num) },
             text = {
                 Text(
                     text = "Search",
@@ -54,24 +56,26 @@ fun MoviesTabRow (
 
 @Composable
 fun MoviesNavRail(
+    uiState: MoviesUiState,
+    onTabPressed: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavigationRail {
         NavigationRailItem(
-            selected = true,
-            onClick = {  },
+            selected = uiState.selectedTab == TAB.TOP_RATED.num,
+            onClick = { onTabPressed(TAB.TOP_RATED.num) },
             icon = { Icon(imageVector = Icons.Default.Star, contentDescription = "Top Rated") },
             label = { Text("Top Rated") }
         )
         NavigationRailItem(
-            selected = false,
-            onClick = {  },
+            selected = uiState.selectedTab == TAB.POPULAR.num,
+            onClick = { onTabPressed(TAB.POPULAR.num) },
             icon = { Icon(imageVector = Icons.Default.Favorite, contentDescription = "Popular") },
             label = { Text("Popular") }
         )
         NavigationRailItem(
-            selected = false,
-            onClick = {  },
+            selected = uiState.selectedTab == TAB.SEARCH.num,
+            onClick = { onTabPressed(TAB.SEARCH.num) },
             icon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
             label = { Text("Search") }
         )
