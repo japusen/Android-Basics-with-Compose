@@ -1,5 +1,6 @@
 package com.example.movies.ui
 
+import android.util.Log
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -37,18 +38,22 @@ fun MoviesApp(
         WindowWidthSizeClass.Compact -> {
             navigationType = NavigationType.BOTTOM_NAVIGATION
             contentType = ContentType.LIST_ONLY
+            Log.d("WindowWidth", "COMPACT")
         }
         WindowWidthSizeClass.Medium -> {
             navigationType = NavigationType.NAVIGATION_RAIL
             contentType = ContentType.LIST_ONLY
+            Log.d("WindowWidth", "MEDIUM")
         }
         WindowWidthSizeClass.Expanded -> {
             navigationType = NavigationType.PERMANENT_NAVIGATION_DRAWER
             contentType = ContentType.LIST_AND_DETAIL
+            Log.d("WindowWidth", "EXPANDED")
         }
         else -> {
             navigationType = NavigationType.BOTTOM_NAVIGATION
             contentType = ContentType.LIST_AND_DETAIL
+            Log.d("WindowWidth", "OTHER")
         }
     }
 

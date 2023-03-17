@@ -73,33 +73,33 @@ private fun AppContent(
     Row(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
             // Navigation Content
+            MoviesNavRail()
         }
-        Column(
+
+        Column (
             modifier = modifier
                 .fillMaxSize()
         ) {
+
+            AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
+                // Navigation Content
+                MoviesTabRow()
+            }
 
             if (contentType == ContentType.LIST_AND_DETAIL) {
                 MovieListAndDetailContent(
                     uiState = uiState,
                     movies = movieList,
                     gridState = gridState,
-                    onMovieCardPressed = onMovieCardPressed,
-                    modifier = modifier.weight(1f)
+                    onMovieCardPressed = onMovieCardPressed
                 )
             } else {
                 MovieListOnlyContent(
                     movies = movieList,
                     gridState = gridState,
-                    onMovieCardPressed = onMovieCardPressed,
-                    modifier = Modifier.weight(1f)
+                    onMovieCardPressed = onMovieCardPressed
                 )
             }
-
-            AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
-                // Navigation Content
-            }
-
         }
     }
 }
