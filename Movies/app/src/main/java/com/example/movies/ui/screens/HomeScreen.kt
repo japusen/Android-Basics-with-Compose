@@ -1,58 +1,93 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.movies.R
-import com.example.movies.ui.screens.MovieGrid
-import com.example.movies.ui.screens.RepoRequestState
+import com.example.movies.model.Movie
+import com.example.movies.ui.screens.*
+import com.example.movies.ui.utils.ContentType
+import com.example.movies.ui.utils.NavigationType
 
 @Composable
 fun HomeScreen(
-    repoRequestState: RepoRequestState,
+    navigationType: NavigationType,
+    contentType: ContentType,
+    uiState: MoviesUiState,
+    movieListState: RepoRequestState,
+    searchResultsState: RepoRequestState,
+    onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (repoRequestState) {
-        is RepoRequestState.Loading -> LoadingScreen(modifier)
-        is RepoRequestState.Success -> MovieGrid(repoRequestState.movies.collectAsLazyPagingItems())
-        is RepoRequestState.Error -> ErrorScreen(modifier)
-    }
-}
 
-
-/**
- * The home screen displaying the loading message.
- */
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Image(
-            modifier = Modifier.size(200.dp),
-            painter = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.loading)
+    if (navigationType == NavigationType.PERMANENT_NAVIGATION_DRAWER) {
+        // Tablet
+        AppContent(
+            navigationType = navigationType,
+            contentType = contentType,
+            uiState = uiState,
+            movieListState = movieListState,
+            searchResultsState = searchResultsState,
+            onMovieCardPressed = onMovieCardPressed
         )
+    } else {
+        if (uiState.isShowingMovieDetail) {
+            // Detail Screen
+            MovieDetail(
+                movie = uiState.currentSelectedMovie
+            )
+        } else {
+            // Grid Screen
+            AppContent(
+                navigationType = navigationType,
+                contentType = contentType,
+                uiState = uiState,
+                movieListState = movieListState,
+                searchResultsState = searchResultsState,
+                onMovieCardPressed = onMovieCardPressed
+            )
+        }
     }
 }
 
-/**
- * The home screen displaying error message
- */
 @Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Text(stringResource(R.string.loading_failed))
+private fun AppContent(
+    navigationType: NavigationType,
+    contentType: ContentType,
+    uiState: MoviesUiState,
+    movieListState: RepoRequestState,
+    searchResultsState: RepoRequestState,
+    onMovieCardPressed: (Movie) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier.fillMaxSize()) {
+        AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
+            // Navigation Content
+        }
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+
+            AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
+                // Navigation Content
+            }
+
+            if (contentType == ContentType.LIST_AND_DETAIL) {
+                MovieListAndDetailContent(
+                    uiState = uiState,
+                    movieState = movieListState,
+                    onMovieCardPressed = onMovieCardPressed,
+                    modifier = modifier.weight(1f)
+                )
+            } else {
+                MovieListOnlyContent(
+                    movieState = movieListState,
+                    onMovieCardPressed = onMovieCardPressed,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+        }
     }
 }

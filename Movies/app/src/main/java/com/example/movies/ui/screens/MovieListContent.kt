@@ -1,5 +1,6 @@
 package com.example.movies.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,9 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movies.R
@@ -28,11 +31,90 @@ private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
 private const val IMAGE_SIZE = "w780"
 
 @Composable
-fun MovieGrid(
-    movies: LazyPagingItems<Movie>,
+fun MovieListOnlyContent(
+    movieState: RepoRequestState,
+    onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    when (movieState) {
+        is RepoRequestState.Loading -> LoadingScreen(modifier)
+        is RepoRequestState.Success -> MovieGrid(
+            movies = movieState.movies.collectAsLazyPagingItems(),
+            onMovieCardPressed = onMovieCardPressed
+        )
+        is RepoRequestState.Error -> ErrorScreen(modifier)
+    }
+}
 
+@Composable
+fun MovieListAndDetailContent(
+    uiState: MoviesUiState,
+    movieState: RepoRequestState,
+    onMovieCardPressed: (Movie) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
+        when (movieState) {
+            is RepoRequestState.Loading -> LoadingScreen(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 16.dp, top = 20.dp))
+            is RepoRequestState.Success -> MovieGrid(
+                movies = movieState.movies.collectAsLazyPagingItems(),
+                onMovieCardPressed = onMovieCardPressed,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 16.dp, top = 20.dp)
+            )
+            is RepoRequestState.Error -> ErrorScreen(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 16.dp, top = 20.dp))
+        }
+
+        MovieDetail(
+            movie = uiState.currentSelectedMovie,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+/**
+ * The home screen displaying the loading message.
+ */
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Image(
+            modifier = Modifier.size(200.dp),
+            painter = painterResource(R.drawable.loading_img),
+            contentDescription = stringResource(R.string.loading)
+        )
+    }
+}
+
+/**
+ * The home screen displaying error message
+ */
+@Composable
+fun ErrorScreen(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Text(stringResource(R.string.loading_failed))
+    }
+}
+
+@Composable
+fun MovieGrid(
+    movies: LazyPagingItems<Movie>,
+    onMovieCardPressed: (Movie) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(128.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -40,7 +122,10 @@ fun MovieGrid(
         modifier = modifier.padding(8.dp)
     ) {
         items(movies.itemCount) { index ->
-            MovieCard(movie = movies[index]!!)
+            MovieCard(
+                movie = movies[index]!!,
+                onMovieCardPressed = onMovieCardPressed
+            )
         }
     }
 }
@@ -48,12 +133,13 @@ fun MovieGrid(
 @Composable
 fun MovieCard(
     movie: Movie,
+    onMovieCardPressed: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         elevation = 16.dp,
         modifier = modifier
-            .clickable { }
+            .clickable { onMovieCardPressed(movie) }
     ) {
         if (movie.posterPath != null) {
             MoviePoster(movie)
@@ -105,45 +191,6 @@ fun MovieNoPoster(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.h5,
             color = Color.White
-        )
-    }
-}
-
-@Composable
-fun MovieDetail(
-    movie: Movie,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(3.dp),
-        modifier = modifier
-            .padding(6.dp)
-    ) {
-        Text(
-            text = "${movie.title} (${movie.releaseDate})",
-            style = MaterialTheme.typography.h2
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Votes: ${movie.vote_count}",
-                style = MaterialTheme.typography.h3
-            )
-            Spacer(modifier = modifier.weight(1f))
-            Text(
-                text = "Score: ${movie.voteAverage} / 10",
-                style = MaterialTheme.typography.h3
-            )
-        }
-        Text(
-            text = movie.overview,
-            style = MaterialTheme.typography.h3,
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxSize()
         )
     }
 }

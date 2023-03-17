@@ -2,7 +2,6 @@ package com.example.movies.ui.screens
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.paging.PagingData
 import com.example.movies.MoviesApplication
 import com.example.movies.data.MoviesRepository
 import com.example.movies.data.RequestType
@@ -24,7 +22,10 @@ class MoviesViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    var repoRequestState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
+    var movieListState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
+        private set
+
+    var searchResultsState: RepoRequestState by mutableStateOf(RepoRequestState.Loading)
         private set
 
     private val _uiState = MutableStateFlow(MoviesUiState())
@@ -66,15 +67,32 @@ class MoviesViewModel(
         }
     }
 
-    fun updateSearchState() {
+    fun updateIsShowingSearchResults() {
         _uiState.update { currentState ->
             currentState.copy(
-                searchState = !uiState.value.searchState
+                isShowingSearchResults = !uiState.value.isShowingSearchResults
             )
-        }    }
+        }
+    }
+
+    fun updateCurrentMovie(movie: Movie) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                currentSelectedMovie = movie
+            )
+        }
+    }
+
+    fun updateIsShowingMovieDetail() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isShowingMovieDetail = !uiState.value.isShowingMovieDetail
+            )
+        }
+    }
 
     fun loadTopRatedMovies() {
-        repoRequestState = try {
+        movieListState = try {
             val movieList = moviesRepository.getTopRatedMovies()
             RepoRequestState.Success(movieList)
         } catch (e: IOException) {
@@ -83,7 +101,7 @@ class MoviesViewModel(
     }
 
     fun loadPopularMovies() {
-        repoRequestState = try {
+        movieListState = try {
             val movieList = moviesRepository.getPopularMovies()
             RepoRequestState.Success(movieList)
         } catch (e: IOException) {
@@ -92,7 +110,7 @@ class MoviesViewModel(
     }
 
     fun searchForMovie() {
-        repoRequestState = try {
+        searchResultsState = try {
             val query = uiState.value.previousQuery
             val movieList = moviesRepository.movieSearch(query)
             RepoRequestState.Success(movieList)
