@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.movies.data.RequestType
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.HomeScreen
 import com.example.movies.ui.screens.MoviesViewModel

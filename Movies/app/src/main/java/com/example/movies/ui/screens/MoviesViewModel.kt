@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.movies.MoviesApplication
 import com.example.movies.data.MoviesRepository
-import com.example.movies.data.RequestType
 import com.example.movies.model.Movie
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 
 class MoviesViewModel(
