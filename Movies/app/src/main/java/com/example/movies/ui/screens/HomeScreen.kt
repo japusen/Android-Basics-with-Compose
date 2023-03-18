@@ -56,11 +56,13 @@ fun HomeScreen(
     } else {
         if (uiState.isShowingMovieDetail) {
             // Detail Screen
-            MovieDetail(
-                movie = uiState.selectedMovie,
-                onBackPressed = onDetailScreenBackPressed,
-                isFullScreen = true,
-            )
+            if (uiState.selectedMovie != null) {
+                MovieDetail(
+                    movie = uiState.selectedMovie,
+                    onBackPressed = onDetailScreenBackPressed,
+                    isFullScreen = true,
+                )
+            }
         } else {
             // Grid Screen
             AppContent(

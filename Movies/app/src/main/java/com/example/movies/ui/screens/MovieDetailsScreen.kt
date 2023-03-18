@@ -30,8 +30,8 @@ private const val IMAGE_SIZE = "w780"
 @Composable
 fun MovieDetail(
     movie: Movie?,
-    onBackPressed: () -> Unit = {},
     modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit = {},
     isFullScreen: Boolean = false
 ) {
     Card(
@@ -40,15 +40,16 @@ fun MovieDetail(
             .padding(8.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-        ) {
-            if (movie != null) {
+        if (movie != null) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+            ) {
                 if (movie.backdrop_path != null) {
-                    Box(modifier = Modifier
-                        .height(250.dp)
-                        .fillMaxWidth()
+                    Box(
+                        modifier = Modifier
+                            .height(250.dp)
+                            .fillMaxWidth()
                     ) {
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
@@ -77,9 +78,8 @@ fun MovieDetail(
                     text = movie.overview,
                     style = MaterialTheme.typography.h5,
                     textAlign = TextAlign.Justify,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
                 )
-
 
                 if (isFullScreen) {
                     Spacer(modifier = Modifier.weight(1f))
