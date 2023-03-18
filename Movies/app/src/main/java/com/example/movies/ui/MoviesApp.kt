@@ -26,9 +26,9 @@ fun MoviesApp(
 
     val movieList = when(uiState.selectedTab) {
         TAB.TOP_RATED.num ->
-            uiState.topRatedMovies.collectAsLazyPagingItems()
+            uiState.topRatedMovies?.collectAsLazyPagingItems()
         TAB.POPULAR.num ->
-            uiState.popularMovies.collectAsLazyPagingItems()
+            uiState.popularMovies?.collectAsLazyPagingItems()
         else ->
             uiState.searchResults?.collectAsLazyPagingItems()
     }
@@ -73,9 +73,18 @@ fun MoviesApp(
             if (num != uiState.selectedTab) {
                 moviesViewModel.setSelectedTab(num)
                 when (num) {
-                    TAB.TOP_RATED.num -> moviesViewModel.loadTopRatedMovies()
-                    TAB.POPULAR.num -> moviesViewModel.loadPopularMovies()
-                    TAB.SEARCH.num -> { /* TODO */ }
+                    TAB.TOP_RATED.num -> {
+                        moviesViewModel.loadTopRatedMovies()
+                        moviesViewModel.setCurrentMovie(null)
+                    }
+                    TAB.POPULAR.num -> {
+                        moviesViewModel.loadPopularMovies()
+                        moviesViewModel.setCurrentMovie(null)
+                    }
+                    TAB.SEARCH.num -> {
+                        moviesViewModel.searchForMovie()
+                        moviesViewModel.setCurrentMovie(null)
+                    }
                 }
             }
         },

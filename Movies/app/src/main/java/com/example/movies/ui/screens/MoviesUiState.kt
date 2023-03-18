@@ -12,11 +12,11 @@ enum class TAB(val num: Int) {
 }
 
 data class MoviesUiState(
-    val topRatedMovies: Flow<PagingData<Movie>>,
-    val popularMovies: Flow<PagingData<Movie>>,
+    val topRatedMovies: Flow<PagingData<Movie>>? = null,
+    val popularMovies: Flow<PagingData<Movie>>? = null,
     val searchResults: Flow<PagingData<Movie>>? = null,
     val previousQuery: String = "",
-    val query: String = "",
+    val query: String = "space",
     val selectedMovie: Movie? = null,
     val selectedTab: Int = TAB.TOP_RATED.num,
     val isShowingSearchResults: Boolean = false,

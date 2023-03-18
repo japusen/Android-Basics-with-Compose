@@ -1,17 +1,21 @@
 package com.example.movies.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.example.movies.model.Movie
 import com.example.movies.ui.utils.ContentType
 import com.example.movies.ui.utils.NavigationType
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigationType: NavigationType,
@@ -25,17 +29,30 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
 
+    // Tablet
     if (navigationType == NavigationType.PERMANENT_NAVIGATION_DRAWER) {
-        // Tablet
-        AppContent(
-            navigationType = navigationType,
-            contentType = contentType,
-            uiState = uiState,
-            movieList = movieList,
-            gridState = gridState,
-            onMovieCardPressed = onMovieCardPressed,
-            onTabPressed = onTabPressed
-        )
+        PermanentNavigationDrawer(
+            drawerContent = {
+                PermanentDrawerSheet(Modifier.width(175.dp)) {
+                    MoviesNavDrawerContent(
+                        uiState = uiState,
+                        onTabPressed = onTabPressed,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+        ) {
+            AppContent(
+                navigationType = navigationType,
+                contentType = contentType,
+                uiState = uiState,
+                movieList = movieList,
+                gridState = gridState,
+                onMovieCardPressed = onMovieCardPressed,
+                onTabPressed = onTabPressed
+            )
+        }
+
     } else {
         if (uiState.isShowingMovieDetail) {
             // Detail Screen

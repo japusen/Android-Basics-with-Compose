@@ -22,11 +22,14 @@ class MoviesViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        MoviesUiState(
-            topRatedMovies = loadTopRatedMovies(),
-            popularMovies = loadPopularMovies(),
-        )
+        MoviesUiState()
     )
+
+    init {
+        loadPopularMovies()
+        loadTopRatedMovies()
+    }
+
     val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
 
     fun updatePreviousQuery(query: String) {
@@ -53,7 +56,7 @@ class MoviesViewModel(
         }
     }
 
-    fun setCurrentMovie(movie: Movie) {
+    fun setCurrentMovie(movie: Movie?) {
         _uiState.update { currentState ->
             currentState.copy(
                 selectedMovie = movie
@@ -77,12 +80,21 @@ class MoviesViewModel(
         }
     }
 
-    fun loadTopRatedMovies(): Flow<PagingData<Movie>> {
-        return moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
+    fun loadTopRatedMovies() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                topRatedMovies = moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
+            )
+        }
+        return
     }
 
-    fun loadPopularMovies(): Flow<PagingData<Movie>> {
-        return moviesRepository.getPopularMovies().cachedIn(viewModelScope)
+    fun loadPopularMovies() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                popularMovies = moviesRepository.getPopularMovies().cachedIn(viewModelScope)
+            )
+        }
     }
 
     fun searchForMovie() {
