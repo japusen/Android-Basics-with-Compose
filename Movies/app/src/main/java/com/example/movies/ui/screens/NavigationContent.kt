@@ -15,51 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
-fun MoviesTabRow (
-    uiState: MoviesUiState,
-    onTabPressed: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TabRow(
-        selectedTabIndex = uiState.selectedTab,
-    ) {
-        Tab(
-            selected = uiState.selectedTab == TAB.TOP_RATED.num,
-            onClick = { onTabPressed(TAB.TOP_RATED.num) },
-            text = {
-                Text(
-                    text = "Top Rated",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        )
-        Tab(
-            selected = uiState.selectedTab == TAB.POPULAR.num,
-            onClick = { onTabPressed(TAB.POPULAR.num) },
-            text = {
-                Text(
-                    text = "Popular",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        )
-        Tab(
-            selected = uiState.selectedTab == TAB.SEARCH.num,
-            onClick = { onTabPressed(TAB.SEARCH.num) },
-            text = {
-                Text(
-                    text = "Search",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        )
-    }
-}
-
-@Composable
 fun MoviesBottomNavigationBar(
     uiState: MoviesUiState,
     onTabPressed: (Int) -> Unit,

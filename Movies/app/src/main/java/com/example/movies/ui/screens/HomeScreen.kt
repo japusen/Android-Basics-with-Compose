@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -76,6 +77,7 @@ fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppContent(
     navigationType: NavigationType,
@@ -96,34 +98,37 @@ private fun AppContent(
             )
         }
 
-        Column (
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.inverseOnSurface)
-        ) {
-
-            if (contentType == ContentType.LIST_AND_DETAIL) {
-                MovieListAndDetailContent(
-                    uiState = uiState,
-                    movies = movieList,
-                    gridState = gridState,
-                    onMovieCardPressed = onMovieCardPressed
-                )
-            } else {
-                MovieListOnlyContent(
-                    movies = movieList,
-                    gridState = gridState,
-                    onMovieCardPressed = onMovieCardPressed
-                )
-            }
-
-            AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
-                // Navigation Content
-                MoviesBottomNavigationBar(
+        Scaffold(
+            bottomBar = {
+                if (navigationType == NavigationType.BOTTOM_NAVIGATION) { MoviesBottomNavigationBar(
                     uiState = uiState,
                     onTabPressed = onTabPressed
-                )
+                ) }
+            }
+        ) {
+            Column (
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    .padding(it)
+            ) {
+
+                if (contentType == ContentType.LIST_AND_DETAIL) {
+                    MovieListAndDetailContent(
+                        uiState = uiState,
+                        movies = movieList,
+                        gridState = gridState,
+                        onMovieCardPressed = onMovieCardPressed
+                    )
+                } else {
+                    MovieListOnlyContent(
+                        movies = movieList,
+                        gridState = gridState,
+                        onMovieCardPressed = onMovieCardPressed
+                    )
+                }
             }
         }
+
     }
 }

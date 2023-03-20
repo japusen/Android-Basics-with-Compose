@@ -77,7 +77,7 @@ fun MovieGrid(
         columns = GridCells.Adaptive(150.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp)
     ) {
         if (movies != null) {
             items(movies.itemCount) { index ->
