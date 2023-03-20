@@ -1,6 +1,7 @@
 package com.example.movies.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.*
@@ -98,15 +99,8 @@ private fun AppContent(
         Column (
             modifier = modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
-
-            AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
-                // Navigation Content
-                MoviesTabRow(
-                    uiState = uiState,
-                    onTabPressed = onTabPressed
-                )
-            }
 
             if (contentType == ContentType.LIST_AND_DETAIL) {
                 MovieListAndDetailContent(
@@ -120,6 +114,14 @@ private fun AppContent(
                     movies = movieList,
                     gridState = gridState,
                     onMovieCardPressed = onMovieCardPressed
+                )
+            }
+
+            AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
+                // Navigation Content
+                MoviesBottomNavigationBar(
+                    uiState = uiState,
+                    onTabPressed = onTabPressed
                 )
             }
         }

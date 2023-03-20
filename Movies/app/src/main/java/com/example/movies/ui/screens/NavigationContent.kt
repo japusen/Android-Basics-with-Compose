@@ -1,11 +1,14 @@
 package com.example.movies.ui.screens
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -52,6 +55,34 @@ fun MoviesTabRow (
                     overflow = TextOverflow.Ellipsis
                 )
             }
+        )
+    }
+}
+
+@Composable
+fun MoviesBottomNavigationBar(
+    uiState: MoviesUiState,
+    onTabPressed: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    NavigationBar(modifier = Modifier.fillMaxWidth()) {
+        NavigationBarItem(
+            selected = uiState.selectedTab == TAB.TOP_RATED.num,
+            onClick = { onTabPressed(TAB.TOP_RATED.num) },
+            icon = { Icon(imageVector = Icons.Default.Star, contentDescription = "Top Rated") },
+            label = { Text("Top Rated") }
+        )
+        NavigationBarItem(
+            selected = uiState.selectedTab == TAB.POPULAR.num,
+            onClick = { onTabPressed(TAB.POPULAR.num) },
+            icon = { Icon(imageVector = Icons.Default.Favorite, contentDescription = "Popular") },
+            label = { Text("Popular") }
+        )
+        NavigationBarItem(
+            selected = uiState.selectedTab == TAB.SEARCH.num,
+            onClick = { onTabPressed(TAB.SEARCH.num) },
+            icon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
+            label = { Text("Search") }
         )
     }
 }
