@@ -40,7 +40,7 @@ fun MediumHomeScreen(
                 if (uiState.selectedMovie != null) {
                     MovieDetail(
                         movie = uiState.selectedMovie,
-                        // onBackPressed = onDetailScreenBackPressed,
+                        onBackPressed = onDetailScreenBackPressed,
                         isFullScreen = true
                     )
                 }

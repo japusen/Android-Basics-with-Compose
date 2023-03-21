@@ -79,21 +79,21 @@ fun MovieDetail(
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
                 )
 
-//                if (isFullScreen) {
-//                    Spacer(modifier = Modifier.weight(1f))
-//
-//                    IconButton(
-//                        onClick = onBackPressed,
-//                        modifier = Modifier
-//                            .padding(start = 8.dp, bottom = 8.dp)
-//                    ) {
-//                        Icon(
-//                            imageVector = Icons.Outlined.ArrowBack,
-//                            contentDescription = stringResource(R.string.go_back),
-//                            tint = MaterialTheme.colors.onSurface
-//                        )
-//                    }
-//                }
+                if (isFullScreen) {
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = onBackPressed,
+                        modifier = Modifier
+                            .padding(start = 8.dp, bottom = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = stringResource(R.string.go_back),
+                            tint = MaterialTheme.colors.onSurface
+                        )
+                    }
+                }
             }
         }
     }
