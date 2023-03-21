@@ -2,6 +2,7 @@ package com.example.movies.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -26,36 +27,41 @@ fun CompactHomeScreen(
     modifier: Modifier = Modifier
 ) {
 
-    if (uiState.isShowingMovieDetail) {
-        BackHandler {
-            onDetailScreenBackPressed()
-        }
-        // Detail Screen
-        if (uiState.selectedMovie != null) {
-            MovieDetail(
-                movie = uiState.selectedMovie,
-                onBackPressed = onDetailScreenBackPressed,
-                isFullScreen = true,
+    Scaffold(
+        bottomBar = {
+            MoviesBottomNavigationBar(
+                uiState = uiState,
+                onTabPressed = onTabPressed
             )
-        }
-    } else {
-        Scaffold(
-            bottomBar = {
-                MoviesBottomNavigationBar(
-                    uiState = uiState,
-                    onTabPressed = onTabPressed
+        },
+        modifier = modifier.fillMaxSize()
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(bottom = padding.calculateBottomPadding())
+        ) {
+            if (uiState.isShowingMovieDetail) {
+                BackHandler {
+                    onDetailScreenBackPressed()
+                }
+                // Detail Screen
+                if (uiState.selectedMovie != null) {
+                    MovieDetail(
+                        movie = uiState.selectedMovie,
+                        onBackPressed = onDetailScreenBackPressed,
+                        isFullScreen = true,
+                        modifier = modifier.fillMaxSize()
+                    )
+                }
+            } else {
+                MovieGrid(
+                    movies = movieList,
+                    gridState = gridState,
+                    onMovieCardPressed = onMovieCardPressed,
+                    modifier = modifier
+                        .background(MaterialTheme.colorScheme.inverseOnSurface)
                 )
             }
-        ) {
-            MovieGrid(
-                movies = movieList,
-                gridState = gridState,
-                onMovieCardPressed = onMovieCardPressed,
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.inverseOnSurface)
-                    .padding(it)
-            )
         }
     }
 }
