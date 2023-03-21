@@ -26,27 +26,28 @@ fun CompactHomeScreen(
     modifier: Modifier = Modifier
 ) {
 
-    if (uiState.isShowingMovieDetail) {
-        BackHandler {
-            onDetailScreenBackPressed()
-        }
-        // Detail Screen
-        if (uiState.selectedMovie != null) {
-            MovieDetail(
-                movie = uiState.selectedMovie,
-                onBackPressed = onDetailScreenBackPressed,
-                isFullScreen = true,
+    Scaffold(
+        bottomBar = {
+            MoviesBottomNavigationBar(
+                uiState = uiState,
+                onTabPressed = onTabPressed
             )
         }
-    } else {
-        Scaffold(
-            bottomBar = {
-                MoviesBottomNavigationBar(
-                    uiState = uiState,
-                    onTabPressed = onTabPressed
+    ) {
+        if (uiState.isShowingMovieDetail) {
+            BackHandler {
+                onDetailScreenBackPressed()
+            }
+            // Detail Screen
+            if (uiState.selectedMovie != null) {
+                MovieDetail(
+                    movie = uiState.selectedMovie,
+                    // onBackPressed = onDetailScreenBackPressed,
+                    isFullScreen = true,
+                    modifier = modifier.fillMaxSize()
                 )
             }
-        ) {
+        } else {
             MovieGrid(
                 movies = movieList,
                 gridState = gridState,
