@@ -5,11 +5,9 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.*
-import com.example.movies.ui.theme.MoviesTheme
 
 
 @Composable
