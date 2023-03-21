@@ -17,6 +17,8 @@ fun ExpandedHomeScreen(
     gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
     onTabPressed: (Int) -> Unit,
+    onSearchTextChange: (String) -> Unit,
+    onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     PermanentNavigationDrawer(
@@ -34,10 +36,13 @@ fun ExpandedHomeScreen(
             modifier = modifier.fillMaxSize()
         ) {
             Row {
-                MovieGrid(
-                    movies = movieList,
+                MovieGridScreen(
+                    uiState = uiState,
+                    movieList = movieList,
                     gridState = gridState,
                     onMovieCardPressed = onMovieCardPressed,
+                    onSearchTextChange = onSearchTextChange,
+                    onSearch = onSearch,
                     modifier = modifier
                         .weight(1f)
                 )

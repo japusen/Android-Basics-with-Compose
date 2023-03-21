@@ -14,10 +14,9 @@ data class MoviesUiState(
     val topRatedMovies: Flow<PagingData<Movie>>? = null,
     val popularMovies: Flow<PagingData<Movie>>? = null,
     val searchResults: Flow<PagingData<Movie>>? = null,
-    val previousQuery: String = "",
-    val query: String = "space",
+    val query: String = "",
     val selectedMovie: Movie? = null,
     val selectedTab: Int = TAB.TOP_RATED.num,
-    val isShowingSearchResults: Boolean = false,
+    val isShowingSearchTab: Boolean = false,
     val isShowingMovieDetail: Boolean = false,
 )

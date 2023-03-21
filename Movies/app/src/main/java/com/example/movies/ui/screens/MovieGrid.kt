@@ -8,14 +8,14 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,6 +29,36 @@ import com.example.movies.model.Movie
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
 private const val IMAGE_SIZE = "w780"
 
+@Composable
+fun MovieGridScreen(
+    uiState: MoviesUiState,
+    movieList: LazyPagingItems<Movie>?,
+    gridState: LazyGridState,
+    onMovieCardPressed: (Movie) -> Unit,
+    onSearchTextChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+        modifier = modifier
+    ) {
+        MovieGrid(
+            movies = movieList,
+            gridState = gridState,
+            onMovieCardPressed = onMovieCardPressed,
+            modifier = modifier
+                .background(androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface)
+        )
+
+        SearchBar(
+            uiState = uiState,
+            onSearchTextChange = onSearchTextChange,
+            onSearch = onSearch
+        )
+    }
+}
 @Composable
 fun MovieGrid(
     movies: LazyPagingItems<Movie>?,

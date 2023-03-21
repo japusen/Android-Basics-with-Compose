@@ -2,6 +2,7 @@ package com.example.movies.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,8 @@ fun CompactHomeScreen(
     onMovieCardPressed: (Movie) -> Unit,
     onDetailScreenBackPressed: () -> Unit,
     onTabPressed: (Int) -> Unit,
+    onSearchTextChange: (String) -> Unit,
+    onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -54,12 +57,13 @@ fun CompactHomeScreen(
                     )
                 }
             } else {
-                MovieGrid(
-                    movies = movieList,
+                MovieGridScreen(
+                    uiState = uiState,
+                    movieList = movieList,
                     gridState = gridState,
                     onMovieCardPressed = onMovieCardPressed,
-                    modifier = modifier
-                        .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    onSearchTextChange = onSearchTextChange,
+                    onSearch = onSearch
                 )
             }
         }

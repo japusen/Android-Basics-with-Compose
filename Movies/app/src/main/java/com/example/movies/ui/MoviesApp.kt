@@ -5,9 +5,11 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.*
+import com.example.movies.ui.theme.MoviesTheme
 
 
 @Composable
@@ -42,14 +44,17 @@ fun MoviesApp(
                 TAB.TOP_RATED.num -> {
                     moviesViewModel.setCurrentMovie(null)
                     moviesViewModel.setIsShowingMovieDetail(false)
+                    moviesViewModel.setIsShowingSearchTab(false)
                 }
                 TAB.POPULAR.num -> {
                     moviesViewModel.setCurrentMovie(null)
                     moviesViewModel.setIsShowingMovieDetail(false)
+                    moviesViewModel.setIsShowingSearchTab(false)
                 }
                 TAB.SEARCH.num -> {
                     moviesViewModel.setCurrentMovie(null)
                     moviesViewModel.setIsShowingMovieDetail(false)
+                    moviesViewModel.setIsShowingSearchTab(true)
                 }
             }
         }
@@ -57,6 +62,15 @@ fun MoviesApp(
 
     val onDetailScreenBackPressed = {
         moviesViewModel.setIsShowingMovieDetail(false)
+    }
+
+    val onSearchTextChange = { query: String ->
+        moviesViewModel.updateQuery(query)
+    }
+
+    val onSearch = {
+        moviesViewModel.searchForMovie()
+        moviesViewModel.setCurrentMovie(null)
     }
 
     when (windowSize) {
@@ -68,6 +82,8 @@ fun MoviesApp(
                 onMovieCardPressed = onMovieCardPressed,
                 onDetailScreenBackPressed = onDetailScreenBackPressed,
                 onTabPressed = onTabPressed,
+                onSearchTextChange = onSearchTextChange,
+                onSearch = onSearch,
                 modifier = modifier
             )
         }
@@ -79,6 +95,8 @@ fun MoviesApp(
                 onMovieCardPressed = onMovieCardPressed,
                 onDetailScreenBackPressed = onDetailScreenBackPressed,
                 onTabPressed = onTabPressed,
+                onSearchTextChange = onSearchTextChange,
+                onSearch = onSearch,
                 modifier = modifier
             )
         }
@@ -89,6 +107,8 @@ fun MoviesApp(
                 gridState = gridState,
                 onMovieCardPressed = onMovieCardPressed,
                 onTabPressed = onTabPressed,
+                onSearchTextChange = onSearchTextChange,
+                onSearch = onSearch,
                 modifier = modifier
             )
         }

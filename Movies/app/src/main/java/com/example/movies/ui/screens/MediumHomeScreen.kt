@@ -18,6 +18,8 @@ fun MediumHomeScreen(
     onMovieCardPressed: (Movie) -> Unit,
     onDetailScreenBackPressed: () -> Unit,
     onTabPressed: (Int) -> Unit,
+    onSearchTextChange: (String) -> Unit,
+    onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -45,10 +47,13 @@ fun MediumHomeScreen(
                     )
                 }
             } else {
-                MovieGrid(
-                    movies = movieList,
+                MovieGridScreen(
+                    uiState = uiState,
+                    movieList = movieList,
                     gridState = gridState,
                     onMovieCardPressed = onMovieCardPressed,
+                    onSearchTextChange = onSearchTextChange,
+                    onSearch = onSearch
                 )
             }
         }

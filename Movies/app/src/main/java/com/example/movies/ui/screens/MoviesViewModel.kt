@@ -33,14 +33,6 @@ class MoviesViewModel(
 
     val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
 
-    fun updatePreviousQuery(query: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                previousQuery = query.trimStart().trimEnd().toLowerCase(Locale.current)
-            )
-        }
-    }
-
     fun updateQuery(newQuery: String) {
         _uiState.update { currentState ->
             currentState.copy(
@@ -49,10 +41,10 @@ class MoviesViewModel(
         }
     }
 
-    fun setIsShowingSearchResults() {
+    fun setIsShowingSearchTab(bool: Boolean) {
         _uiState.update { currentState ->
             currentState.copy(
-                isShowingSearchResults = !uiState.value.isShowingSearchResults
+                isShowingSearchTab = bool
             )
         }
     }
@@ -99,7 +91,7 @@ class MoviesViewModel(
     }
 
     fun searchForMovie() {
-        val query = uiState.value.previousQuery
+        val query = uiState.value.query
         _uiState.update { currentState ->
             currentState.copy(
                 searchResults = moviesRepository.movieSearch(query).cachedIn(viewModelScope)
