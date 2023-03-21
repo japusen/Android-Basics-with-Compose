@@ -81,7 +81,7 @@ class MoviesViewModel(
         }
     }
 
-    fun loadTopRatedMovies() {
+    private fun loadTopRatedMovies() {
         _uiState.update { currentState ->
             currentState.copy(
                 topRatedMovies = moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
@@ -90,7 +90,7 @@ class MoviesViewModel(
         return
     }
 
-    fun loadPopularMovies() {
+    private fun loadPopularMovies() {
         _uiState.update { currentState ->
             currentState.copy(
                 popularMovies = moviesRepository.getPopularMovies().cachedIn(viewModelScope)

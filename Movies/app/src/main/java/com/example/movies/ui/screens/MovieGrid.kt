@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,43 +30,6 @@ private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
 private const val IMAGE_SIZE = "w780"
 
 @Composable
-fun MovieListOnlyContent(
-    movies: LazyPagingItems<Movie>?,
-    gridState: LazyGridState,
-    onMovieCardPressed: (Movie) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    MovieGrid(
-        movies = movies,
-        gridState = gridState,
-        onMovieCardPressed = onMovieCardPressed
-    )
-}
-
-@Composable
-fun MovieListAndDetailContent(
-    uiState: MoviesUiState,
-    movies: LazyPagingItems<Movie>?,
-    gridState: LazyGridState,
-    onMovieCardPressed: (Movie) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(modifier = modifier) {
-        MovieGrid(
-            movies = movies,
-            gridState = gridState,
-            onMovieCardPressed = onMovieCardPressed,
-            modifier = Modifier.weight(1f)
-        )
-
-        MovieDetail(
-            movie = uiState.selectedMovie,
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-@Composable
 fun MovieGrid(
     movies: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
@@ -75,9 +39,11 @@ fun MovieGrid(
     LazyVerticalGrid(
         state = gridState,
         columns = GridCells.Adaptive(150.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(8.dp)
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(6.dp)
     ) {
         if (movies != null) {
             items(movies.itemCount) { index ->

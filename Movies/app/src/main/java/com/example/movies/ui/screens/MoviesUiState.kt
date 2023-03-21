@@ -20,5 +20,4 @@ data class MoviesUiState(
     val selectedTab: Int = TAB.TOP_RATED.num,
     val isShowingSearchResults: Boolean = false,
     val isShowingMovieDetail: Boolean = false,
-    val menuVisible: Boolean = false,
 )
