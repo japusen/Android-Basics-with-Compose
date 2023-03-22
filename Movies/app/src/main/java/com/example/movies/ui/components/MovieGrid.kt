@@ -37,22 +37,24 @@ fun MovieGridScreen(
     modifier: Modifier = Modifier
 ) {
 
-    Box(
-        contentAlignment = Alignment.BottomCenter,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .background(MaterialTheme.colorScheme.inverseOnSurface)
+            .fillMaxHeight()
     ) {
-        MovieGrid(
-            movies = movieList,
-            gridState = gridState,
-            onMovieCardPressed = onMovieCardPressed,
-            modifier = modifier
-                .background(androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface)
-        )
 
         SearchBar(
             uiState = uiState,
             onSearchTextChange = onSearchTextChange,
             onSearch = onSearch
+        )
+
+        MovieGrid(
+            movies = movieList,
+            gridState = gridState,
+            onMovieCardPressed = onMovieCardPressed,
+            modifier = modifier
         )
     }
 }
@@ -70,7 +72,7 @@ fun MovieGrid(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier
             .fillMaxSize()
-            .padding(6.dp)
+            .padding(start = 6.dp, end = 6.dp, bottom = 6.dp)
     ) {
         if (movies != null) {
             items(movies.itemCount) { index ->
@@ -134,6 +136,7 @@ fun MovieNoPoster(
         modifier = modifier
             .background(Color.Black)
             .height(256.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = if (movie.releaseDate.isNotEmpty())
@@ -141,7 +144,6 @@ fun MovieNoPoster(
             else
                 movie.title,
             textAlign = TextAlign.Center,
-            //style = MaterialTheme.typography.h5,
             color = Color.White
         )
     }

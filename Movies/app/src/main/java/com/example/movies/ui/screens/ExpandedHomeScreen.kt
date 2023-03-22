@@ -1,5 +1,6 @@
 package com.example.movies.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.*
@@ -48,13 +49,15 @@ fun ExpandedHomeScreen(
                     onSearch = onSearch,
                     modifier = modifier
                         .weight(1f)
+                        .fillMaxHeight()
                 )
 
                 MovieDetail(
                     movie = uiState.selectedMovie,
                     modifier = modifier
                         .weight(1f)
-                        .fillMaxSize()
+                        .fillMaxHeight()
+                        .background(MaterialTheme.colorScheme.inverseOnSurface)
                 )
             }
         }

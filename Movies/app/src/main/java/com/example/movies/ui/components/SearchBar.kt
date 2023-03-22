@@ -38,7 +38,7 @@ fun SearchBar(
         shape = RoundedCornerShape(50.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
+            .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
     ) {
         if (uiState.isShowingSearchTab) {
             TextField(
@@ -51,7 +51,7 @@ fun SearchBar(
                     if (searchHasFocus) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back Arror",
+                            contentDescription = "Back Arrow",
                             modifier = Modifier.clickable {
                                 searchHasFocus = false
                                 onSearchTextChange("")

@@ -32,7 +32,7 @@ fun MovieDetail(
     onBackPressed: () -> Unit = {},
     isFullScreen: Boolean = false
 ) {
-    Card(
+    OutlinedCard(
         modifier = modifier
             .padding(8.dp)
             .verticalScroll(rememberScrollState())
@@ -67,20 +67,18 @@ fun MovieDetail(
                         "${movie.title} (${movie.releaseDate.slice(0..3)})"
                     else
                         movie.title,
-                    style = MaterialTheme.typography.displaySmall,
+                    style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp)
                 )
 
                 Text(
-                    text = movie.overview,
+                    text = if (movie.overview != "") movie.overview else "No description available.",
                     textAlign = TextAlign.Justify,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
                 )
 
                 if (isFullScreen) {
-                    Spacer(modifier = Modifier.fillMaxHeight())
-
                     IconButton(
                         onClick = onBackPressed,
                         modifier = Modifier
