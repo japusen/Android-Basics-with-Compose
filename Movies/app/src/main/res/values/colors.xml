@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="dark_inverse_on_surface">#FF313033</color>
-    <color name="light_inverse_on_surface">#FFF4EFF4</color>
+    <color name="light_inverse_on_surface">#FFFFFBFE</color>
 </resources>
