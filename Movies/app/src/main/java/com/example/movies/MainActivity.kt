@@ -10,7 +10,7 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.compose.MoviesTheme
+import com.example.movies.ui.theme.MoviesTheme
 import com.example.movies.ui.MoviesApp
 import com.example.movies.ui.screens.MoviesViewModel
 

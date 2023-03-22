@@ -77,7 +77,7 @@ fun MovieDetail(
                 )
 
                 if (isFullScreen) {
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.fillMaxHeight())
 
                     IconButton(
                         onClick = onBackPressed,
@@ -87,8 +87,7 @@ fun MovieDetail(
                         Icon(
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = stringResource(R.string.go_back),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = modifier.weight(1f)
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

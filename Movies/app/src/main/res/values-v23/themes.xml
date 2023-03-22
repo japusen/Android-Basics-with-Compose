@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.Movies" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/light_inverse_on_surface</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>
