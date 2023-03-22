@@ -31,7 +31,7 @@ fun CompactHomeScreen(
 ) {
 
     Scaffold(
-        bottomBar = {
+        bottomBar = { if (!uiState.isShowingMovieDetail)
             MoviesBottomNavigationBar(
                 uiState = uiState,
                 onTabPressed = onTabPressed

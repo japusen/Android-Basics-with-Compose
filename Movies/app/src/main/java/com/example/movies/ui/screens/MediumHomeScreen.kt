@@ -39,10 +39,13 @@ fun MediumHomeScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            MoviesNavRail(
-                uiState = uiState,
-                onTabPressed = onTabPressed,
-            )
+
+            if (!uiState.isShowingMovieDetail) {
+                MoviesNavRail(
+                    uiState = uiState,
+                    onTabPressed = onTabPressed,
+                )
+            }
 
             Surface(
                 modifier = modifier.fillMaxSize()
