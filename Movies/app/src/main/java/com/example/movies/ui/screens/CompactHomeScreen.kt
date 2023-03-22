@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
 import com.example.movies.model.Movie
+import com.example.movies.ui.components.MovieDetail
+import com.example.movies.ui.components.MovieGridScreen
+import com.example.movies.ui.components.MoviesBottomNavigationBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -8,6 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.example.movies.model.Movie
+import com.example.movies.ui.components.MovieDetail
+import com.example.movies.ui.components.MovieGridScreen
+import com.example.movies.ui.components.MoviesNavDrawerContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

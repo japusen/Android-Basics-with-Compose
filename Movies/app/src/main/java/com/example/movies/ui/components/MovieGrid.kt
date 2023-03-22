@@ -1,4 +1,4 @@
-package com.example.movies.ui.screens
+package com.example.movies.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movies.R
 import com.example.movies.model.Movie
+import com.example.movies.ui.screens.MoviesUiState
 
 // Configuration: https://developers.themoviedb.org/3/configuration/get-api-configuration
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"

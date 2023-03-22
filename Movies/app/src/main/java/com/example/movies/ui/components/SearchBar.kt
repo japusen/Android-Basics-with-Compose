@@ -1,4 +1,4 @@
-package com.example.movies.ui.screens
+package com.example.movies.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.example.movies.ui.screens.MoviesUiState
 
 @Composable
 fun SearchBar(

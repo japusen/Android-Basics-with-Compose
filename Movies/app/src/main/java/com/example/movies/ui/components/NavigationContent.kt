@@ -1,4 +1,4 @@
-package com.example.movies.ui.screens
+package com.example.movies.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -12,6 +12,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.movies.ui.screens.MoviesUiState
+import com.example.movies.ui.screens.TAB
 
 @Composable
 fun MoviesBottomNavigationBar(
