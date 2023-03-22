@@ -3,7 +3,10 @@ package com.example.movies.ui.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +16,7 @@ import com.example.movies.ui.components.MovieDetail
 import com.example.movies.ui.components.MovieGridScreen
 import com.example.movies.ui.components.MoviesNavRail
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediumHomeScreen(
     uiState: MoviesUiState,
@@ -26,38 +30,45 @@ fun MediumHomeScreen(
     modifier: Modifier = Modifier
 ) {
 
-    Row(
-        modifier = modifier.fillMaxSize()
+    Scaffold(
+        modifier = modifier
     ) {
-        MoviesNavRail(
-            uiState = uiState,
-            onTabPressed = onTabPressed,
-        )
 
-        Surface(
-            modifier = modifier.fillMaxSize()
+        Row(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
-            if (uiState.isShowingMovieDetail) {
-                BackHandler() {
-                    onDetailScreenBackPressed()
-                }
-                // Detail Screen
-                if (uiState.selectedMovie != null) {
-                    MovieDetail(
-                        movie = uiState.selectedMovie,
-                        onBackPressed = onDetailScreenBackPressed,
-                        isFullScreen = true
+            MoviesNavRail(
+                uiState = uiState,
+                onTabPressed = onTabPressed,
+            )
+
+            Surface(
+                modifier = modifier.fillMaxSize()
+            ) {
+                if (uiState.isShowingMovieDetail) {
+                    BackHandler() {
+                        onDetailScreenBackPressed()
+                    }
+                    // Detail Screen
+                    if (uiState.selectedMovie != null) {
+                        MovieDetail(
+                            movie = uiState.selectedMovie,
+                            onBackPressed = onDetailScreenBackPressed,
+                            isFullScreen = true
+                        )
+                    }
+                } else {
+                    MovieGridScreen(
+                        uiState = uiState,
+                        movieList = movieList,
+                        gridState = gridState,
+                        onMovieCardPressed = onMovieCardPressed,
+                        onSearchTextChange = onSearchTextChange,
+                        onSearch = onSearch
                     )
                 }
-            } else {
-                MovieGridScreen(
-                    uiState = uiState,
-                    movieList = movieList,
-                    gridState = gridState,
-                    onMovieCardPressed = onMovieCardPressed,
-                    onSearchTextChange = onSearchTextChange,
-                    onSearch = onSearch
-                )
             }
         }
     }

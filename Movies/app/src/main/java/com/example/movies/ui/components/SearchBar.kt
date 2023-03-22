@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.movies.ui.screens.MoviesUiState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     uiState: MoviesUiState,
@@ -33,7 +34,7 @@ fun SearchBar(
     val focusManager = LocalFocusManager.current
 
     Surface(
-        elevation = 8.dp,
+        tonalElevation = 8.dp,
         shape = RoundedCornerShape(50.dp),
         modifier = modifier
             .fillMaxWidth()
@@ -78,7 +79,6 @@ fun SearchBar(
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Gray,
                     disabledTextColor = Color.Transparent,
-                    backgroundColor = Color.White,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent

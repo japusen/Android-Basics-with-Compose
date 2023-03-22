@@ -3,9 +3,9 @@ package com.example.movies.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,7 +33,6 @@ fun MovieDetail(
     isFullScreen: Boolean = false
 ) {
     Card(
-        elevation = 16.dp,
         modifier = modifier
             .padding(8.dp)
             .verticalScroll(rememberScrollState())
@@ -68,13 +67,11 @@ fun MovieDetail(
                         "${movie.title} (${movie.releaseDate.slice(0..3)})"
                     else
                         movie.title,
-                    style = MaterialTheme.typography.h4,
                     modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp)
                 )
 
                 Text(
                     text = movie.overview,
-                    style = MaterialTheme.typography.h5,
                     textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
                 )
@@ -90,7 +87,8 @@ fun MovieDetail(
                         Icon(
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = stringResource(R.string.go_back),
-                            tint = MaterialTheme.colors.onSurface
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = modifier.weight(1f)
                         )
                     }
                 }

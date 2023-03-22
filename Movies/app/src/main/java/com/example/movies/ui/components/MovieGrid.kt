@@ -1,14 +1,11 @@
 package com.example.movies.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,6 +83,7 @@ fun MovieGrid(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieCard(
     movie: Movie,
@@ -93,9 +91,7 @@ fun MovieCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        elevation = 16.dp,
-        modifier = modifier
-            .clickable { onMovieCardPressed(movie) }
+        onClick =  { onMovieCardPressed(movie) }
     ) {
         if (movie.posterPath != null) {
             MoviePoster(movie)
@@ -145,7 +141,7 @@ fun MovieNoPoster(
             else
                 movie.title,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h5,
+            //style = MaterialTheme.typography.h5,
             color = Color.White
         )
     }
