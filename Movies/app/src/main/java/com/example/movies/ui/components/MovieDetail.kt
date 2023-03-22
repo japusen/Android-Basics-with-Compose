@@ -67,13 +67,15 @@ fun MovieDetail(
                         "${movie.title} (${movie.releaseDate.slice(0..3)})"
                     else
                         movie.title,
+                    style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp)
                 )
 
                 Text(
                     text = movie.overview,
                     textAlign = TextAlign.Justify,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
                 )
 
                 if (isFullScreen) {
