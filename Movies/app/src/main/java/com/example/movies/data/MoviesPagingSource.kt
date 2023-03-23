@@ -3,7 +3,7 @@ package com.example.movies.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.movies.model.Movie
-import com.example.movies.model.network.MoviesApiService
+import com.example.movies.network.MoviesApiService
 
 private const val STARTING_PAGE_INDEX = 1
 

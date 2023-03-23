@@ -1,6 +1,6 @@
 package com.example.movies.data
 
-import com.example.movies.model.network.MoviesApiService
+import com.example.movies.network.MoviesApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
