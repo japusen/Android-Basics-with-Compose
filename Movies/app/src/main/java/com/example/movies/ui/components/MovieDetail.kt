@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +51,7 @@ fun MovieDetail(
                 Column {
                     if (movie.backdrop_path != null) {
                         Box(
+                            contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .height(250.dp)
                                 .fillMaxWidth()

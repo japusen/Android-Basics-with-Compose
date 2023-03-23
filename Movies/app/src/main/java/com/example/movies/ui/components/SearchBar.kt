@@ -1,5 +1,6 @@
 package com.example.movies.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,7 +41,7 @@ fun SearchBar(
             .fillMaxWidth()
             .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
     ) {
-        if (uiState.isShowingSearchTab) {
+        AnimatedVisibility(visible = uiState.isShowingSearchTab) {
             TextField(
                 value = uiState.query,
                 onValueChange = { onSearchTextChange(it) },

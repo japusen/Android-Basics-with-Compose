@@ -1,6 +1,7 @@
 package com.example.movies.ui.components
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -64,11 +65,20 @@ fun GridOnly(
     bottomPadding: Dp,
     modifier: Modifier = Modifier
 ) {
+
     Surface(
         modifier = modifier.fillMaxSize()
     ) {
-        if (uiState.isShowingMovieDetail) {
-            BackHandler() {
+        AnimatedVisibility(
+            visible = uiState.isShowingMovieDetail,
+            enter = fadeIn() + slideInHorizontally { fullWidth ->
+                -fullWidth/2
+            },
+            exit = fadeOut() + slideOutHorizontally { fullWidth ->
+                -fullWidth/2
+            },
+        ) {
+            BackHandler {
                 onDetailScreenBackPressed()
             }
             // Detail Screen
@@ -80,7 +90,13 @@ fun GridOnly(
                     bottomPadding = bottomPadding
                 )
             }
-        } else {
+        }
+
+        AnimatedVisibility(
+            visible = !uiState.isShowingMovieDetail,
+            enter = fadeIn(),
+            exit = fadeOut()
+        )  {
             MovieGridScreen(
                 uiState = uiState,
                 movieList = movieList,
