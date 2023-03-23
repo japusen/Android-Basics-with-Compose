@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.*
+import com.example.movies.ui.utils.ContentType
+import com.example.movies.ui.utils.NavigationType
 
 
 @Composable
@@ -71,44 +73,78 @@ fun MoviesApp(
         moviesViewModel.setCurrentMovie(null)
     }
 
+//    when (windowSize) {
+//        WindowWidthSizeClass.Compact -> {
+//            CompactHomeScreen(
+//                uiState = uiState,
+//                movieList = movieList,
+//                gridState = gridState,
+//                onMovieCardPressed = onMovieCardPressed,
+//                onDetailScreenBackPressed = onDetailScreenBackPressed,
+//                onSearchTextChange = onSearchTextChange,
+//                onSearch = onSearch,
+//                modifier = modifier
+//            )
+//        }
+//        WindowWidthSizeClass.Medium -> {
+//            MediumHomeScreen(
+//                uiState = uiState,
+//                movieList = movieList,
+//                gridState = gridState,
+//                onMovieCardPressed = onMovieCardPressed,
+//                onDetailScreenBackPressed = onDetailScreenBackPressed,
+//                onTabPressed = onTabPressed,
+//                onSearchTextChange = onSearchTextChange,
+//                onSearch = onSearch,
+//                modifier = modifier
+//            )
+//        }
+//        WindowWidthSizeClass.Expanded -> {
+//            ExpandedHomeScreen(
+//                uiState = uiState,
+//                movieList = movieList,
+//                gridState = gridState,
+//                onMovieCardPressed = onMovieCardPressed,
+//                onTabPressed = onTabPressed,
+//                onSearchTextChange = onSearchTextChange,
+//                onSearch = onSearch,
+//                modifier = modifier
+//            )
+//        }
+//    }
+
+    val navigationType: NavigationType
+    val contentType: ContentType
+
     when (windowSize) {
         WindowWidthSizeClass.Compact -> {
-            CompactHomeScreen(
-                uiState = uiState,
-                movieList = movieList,
-                gridState = gridState,
-                onMovieCardPressed = onMovieCardPressed,
-                onDetailScreenBackPressed = onDetailScreenBackPressed,
-                onTabPressed = onTabPressed,
-                onSearchTextChange = onSearchTextChange,
-                onSearch = onSearch,
-                modifier = modifier
-            )
+            navigationType = NavigationType.BOTTOM_NAVIGATION
+            contentType = ContentType.LIST_ONLY
         }
         WindowWidthSizeClass.Medium -> {
-            MediumHomeScreen(
-                uiState = uiState,
-                movieList = movieList,
-                gridState = gridState,
-                onMovieCardPressed = onMovieCardPressed,
-                onDetailScreenBackPressed = onDetailScreenBackPressed,
-                onTabPressed = onTabPressed,
-                onSearchTextChange = onSearchTextChange,
-                onSearch = onSearch,
-                modifier = modifier
-            )
+            navigationType = NavigationType.NAVIGATION_RAIL
+            contentType = ContentType.LIST_ONLY
         }
         WindowWidthSizeClass.Expanded -> {
-            ExpandedHomeScreen(
-                uiState = uiState,
-                movieList = movieList,
-                gridState = gridState,
-                onMovieCardPressed = onMovieCardPressed,
-                onTabPressed = onTabPressed,
-                onSearchTextChange = onSearchTextChange,
-                onSearch = onSearch,
-                modifier = modifier
-            )
+            navigationType = NavigationType.PERMANENT_NAVIGATION_DRAWER
+            contentType = ContentType.LIST_AND_DETAIL
+        }
+        else -> {
+            navigationType = NavigationType.BOTTOM_NAVIGATION
+            contentType = ContentType.LIST_ONLY
         }
     }
+
+    HomeScreen(
+        navigationType = navigationType,
+        contentType = contentType,
+        uiState = uiState,
+        movieList = movieList,
+        gridState = gridState,
+        onMovieCardPressed = onMovieCardPressed,
+        onDetailScreenBackPressed = onDetailScreenBackPressed,
+        onTabPressed = onTabPressed,
+        onSearchTextChange = onSearchTextChange,
+        onSearch = onSearch
+    )
 }

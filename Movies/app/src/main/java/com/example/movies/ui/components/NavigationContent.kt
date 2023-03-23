@@ -1,69 +1,54 @@
 package com.example.movies.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import com.example.movies.ui.screens.MoviesUiState
 import com.example.movies.ui.screens.TAB
 
 @Composable
-fun MoviesBottomNavigationBar(
+fun MoviesBottomNavBar(
     uiState: MoviesUiState,
-    onTabPressed: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    navigationItemContentList: List<NavigationItemContent>,
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        NavigationBarItem(
-            selected = uiState.selectedTab == TAB.TOP_RATED.num,
-            onClick = { onTabPressed(TAB.TOP_RATED.num) },
-            icon = { Icon(imageVector = Icons.Default.Star, contentDescription = "Top Rated") },
-            label = { Text("Top Rated") }
-        )
-        NavigationBarItem(
-            selected = uiState.selectedTab == TAB.POPULAR.num,
-            onClick = { onTabPressed(TAB.POPULAR.num) },
-            icon = { Icon(imageVector = Icons.Default.Favorite, contentDescription = "Popular") },
-            label = { Text("Popular") }
-        )
-        NavigationBarItem(
-            selected = uiState.selectedTab == TAB.SEARCH.num,
-            onClick = { onTabPressed(TAB.SEARCH.num) },
-            icon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
-            label = { Text("Search") }
-        )
+        for (navItem in navigationItemContentList) {
+            NavigationBarItem(
+                label = { Text(navItem.text) },
+                selected = uiState.selectedTab == navItem.tab.num,
+                onClick = { navItem.onTabPressed() },
+                icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.text) },
+            )
+        }
     }
 }
 
 @Composable
 fun MoviesNavRail(
     uiState: MoviesUiState,
-    onTabPressed: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    navigationItemContentList: List<NavigationItemContent>,
 ) {
-    NavigationRail {
-        NavigationRailItem(
-            selected = uiState.selectedTab == TAB.TOP_RATED.num,
-            onClick = { onTabPressed(TAB.TOP_RATED.num) },
-            icon = { Icon(imageVector = Icons.Default.Star, contentDescription = "Top Rated") },
-            label = { Text("Top Rated") }
-        )
-        NavigationRailItem(
-            selected = uiState.selectedTab == TAB.POPULAR.num,
-            onClick = { onTabPressed(TAB.POPULAR.num) },
-            icon = { Icon(imageVector = Icons.Default.Favorite, contentDescription = "Popular") },
-            label = { Text("Popular") }
-        )
-        NavigationRailItem(
-            selected = uiState.selectedTab == TAB.SEARCH.num,
-            onClick = { onTabPressed(TAB.SEARCH.num) },
-            icon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
-            label = { Text("Search") }
-        )
+    NavigationRail(
+        header = {
+            Text(
+                text = "Movies",
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+    ) {
+
+        for (navItem in navigationItemContentList) {
+            NavigationRailItem(
+                label = { Text(navItem.text) },
+                selected = uiState.selectedTab == navItem.tab.num,
+                onClick = { navItem.onTabPressed() },
+                icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.text) },
+            )
+        }
     }
 }
 
@@ -71,43 +56,21 @@ fun MoviesNavRail(
 @Composable
 fun MoviesNavDrawerContent(
     uiState: MoviesUiState,
-    onTabPressed: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    navigationItemContentList: List<NavigationItemContent>,
 ) {
-    NavigationDrawerItem(
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Star,
-                contentDescription = "Top Rated"
-            )
-        },
-        label = { Text("Top Rated") },
-        selected = uiState.selectedTab == TAB.TOP_RATED.num,
-        onClick = { onTabPressed(TAB.TOP_RATED.num) },
-        modifier = modifier
-    )
-    NavigationDrawerItem(
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Popular"
-            )
-        },
-        label = { Text("Popular") },
-        selected = uiState.selectedTab == TAB.POPULAR.num,
-        onClick = { onTabPressed(TAB.POPULAR.num) },
-        modifier = modifier
-    )
-    NavigationDrawerItem(
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search"
-            )
-        },
-        label = { Text("Search") },
-        selected = uiState.selectedTab == TAB.SEARCH.num,
-        onClick = { onTabPressed(TAB.SEARCH.num) },
-        modifier = modifier
-    )
+    for (navItem in navigationItemContentList) {
+        NavigationDrawerItem(
+            label = { Text(navItem.text) },
+            selected = uiState.selectedTab == navItem.tab.num,
+            onClick = { navItem.onTabPressed() },
+            icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.text) },
+        )
+    }
 }
+
+data class NavigationItemContent(
+    val text: String,
+    val icon: ImageVector,
+    val tab: TAB,
+    val onTabPressed: () -> Unit
+)
