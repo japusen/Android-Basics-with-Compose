@@ -4,10 +4,11 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.movies.model.Movie
-import com.example.movies.ui.screens.*
+import com.example.movies.ui.screens.HomeScreen
+import com.example.movies.ui.screens.MoviesViewModel
+import com.example.movies.ui.screens.TAB
 import com.example.movies.ui.utils.ContentType
 import com.example.movies.ui.utils.NavigationType
 
@@ -16,18 +17,14 @@ import com.example.movies.ui.utils.NavigationType
 fun MoviesApp(
     moviesViewModel: MoviesViewModel,
     windowSize: WindowWidthSizeClass,
-    modifier: Modifier = Modifier,
 ) {
 
     val uiState = moviesViewModel.uiState.collectAsState().value
 
-    val movieList = when(uiState.selectedTab) {
-        TAB.TOP_RATED.num ->
-            uiState.topRatedMovies?.collectAsLazyPagingItems()
-        TAB.POPULAR.num ->
-            uiState.popularMovies?.collectAsLazyPagingItems()
-        else ->
-            uiState.searchResults?.collectAsLazyPagingItems()
+    val movieList = when (uiState.selectedTab) {
+        TAB.TOP_RATED.num -> uiState.topRatedMovies?.collectAsLazyPagingItems()
+        TAB.POPULAR.num -> uiState.popularMovies?.collectAsLazyPagingItems()
+        else -> uiState.searchResults?.collectAsLazyPagingItems()
     }
 
     val gridState = rememberLazyGridState()
@@ -72,46 +69,6 @@ fun MoviesApp(
         moviesViewModel.searchForMovie()
         moviesViewModel.setCurrentMovie(null)
     }
-
-//    when (windowSize) {
-//        WindowWidthSizeClass.Compact -> {
-//            CompactHomeScreen(
-//                uiState = uiState,
-//                movieList = movieList,
-//                gridState = gridState,
-//                onMovieCardPressed = onMovieCardPressed,
-//                onDetailScreenBackPressed = onDetailScreenBackPressed,
-//                onSearchTextChange = onSearchTextChange,
-//                onSearch = onSearch,
-//                modifier = modifier
-//            )
-//        }
-//        WindowWidthSizeClass.Medium -> {
-//            MediumHomeScreen(
-//                uiState = uiState,
-//                movieList = movieList,
-//                gridState = gridState,
-//                onMovieCardPressed = onMovieCardPressed,
-//                onDetailScreenBackPressed = onDetailScreenBackPressed,
-//                onTabPressed = onTabPressed,
-//                onSearchTextChange = onSearchTextChange,
-//                onSearch = onSearch,
-//                modifier = modifier
-//            )
-//        }
-//        WindowWidthSizeClass.Expanded -> {
-//            ExpandedHomeScreen(
-//                uiState = uiState,
-//                movieList = movieList,
-//                gridState = gridState,
-//                onMovieCardPressed = onMovieCardPressed,
-//                onTabPressed = onTabPressed,
-//                onSearchTextChange = onSearchTextChange,
-//                onSearch = onSearch,
-//                modifier = modifier
-//            )
-//        }
-//    }
 
     val navigationType: NavigationType
     val contentType: ContentType

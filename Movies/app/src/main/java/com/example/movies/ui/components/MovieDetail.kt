@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -31,13 +32,14 @@ fun MovieDetail(
     movie: Movie?,
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {},
+    bottomPadding: Dp = 0.dp,
     isFullScreen: Boolean = false
 ) {
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .fillMaxHeight()
-            .padding(top = 8.dp)
+            .padding(top = 8.dp, bottom = bottomPadding)
     ) {
         OutlinedCard(
             modifier = modifier

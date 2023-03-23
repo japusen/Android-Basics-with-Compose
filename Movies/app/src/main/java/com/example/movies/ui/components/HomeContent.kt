@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.paging.compose.LazyPagingItems
 import com.example.movies.model.Movie
 import com.example.movies.ui.screens.MoviesUiState
@@ -60,6 +61,7 @@ fun GridOnly(
     onDetailScreenBackPressed: () -> Unit,
     onSearchTextChange: (String) -> Unit,
     onSearch: () -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -74,7 +76,8 @@ fun GridOnly(
                 MovieDetail(
                     movie = uiState.selectedMovie,
                     onBackPressed = onDetailScreenBackPressed,
-                    isFullScreen = true
+                    isFullScreen = true,
+                    bottomPadding = bottomPadding
                 )
             }
         } else {
@@ -84,7 +87,7 @@ fun GridOnly(
                 gridState = gridState,
                 onMovieCardPressed = onMovieCardPressed,
                 onSearchTextChange = onSearchTextChange,
-                onSearch = onSearch
+                onSearch = onSearch,
             )
         }
     }

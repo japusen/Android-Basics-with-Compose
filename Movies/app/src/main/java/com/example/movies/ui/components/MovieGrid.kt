@@ -45,9 +45,7 @@ fun MovieGridScreen(
     ) {
 
         SearchBar(
-            uiState = uiState,
-            onSearchTextChange = onSearchTextChange,
-            onSearch = onSearch
+            uiState = uiState, onSearchTextChange = onSearchTextChange, onSearch = onSearch
         )
 
         MovieGrid(
@@ -58,6 +56,7 @@ fun MovieGridScreen(
         )
     }
 }
+
 @Composable
 fun MovieGrid(
     movies: LazyPagingItems<Movie>?,
@@ -77,8 +76,7 @@ fun MovieGrid(
         if (movies != null) {
             items(movies.itemCount) { index ->
                 MovieCard(
-                    movie = movies[index]!!,
-                    onMovieCardPressed = onMovieCardPressed
+                    movie = movies[index]!!, onMovieCardPressed = onMovieCardPressed
                 )
             }
         }
@@ -88,13 +86,9 @@ fun MovieGrid(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieCard(
-    movie: Movie,
-    onMovieCardPressed: (Movie) -> Unit,
-    modifier: Modifier = Modifier
+    movie: Movie, onMovieCardPressed: (Movie) -> Unit, modifier: Modifier = Modifier
 ) {
-    Card(
-        onClick =  { onMovieCardPressed(movie) }
-    ) {
+    Card(onClick = { onMovieCardPressed(movie) }) {
         if (movie.posterPath != null) {
             MoviePoster(movie)
         } else {
@@ -105,19 +99,14 @@ fun MovieCard(
 
 @Composable
 fun MoviePoster(
-    movie: Movie,
-    modifier: Modifier = Modifier
+    movie: Movie, modifier: Modifier = Modifier
 ) {
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .height(256.dp)
+        contentAlignment = Alignment.Center, modifier = modifier.height(256.dp)
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.posterPath}")
-                .crossfade(true)
-                .build(),
+                .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.posterPath}").crossfade(true).build(),
             error = painterResource(R.drawable.ic_broken_image),
             placeholder = painterResource(R.drawable.loading_img),
             contentDescription = movie.title,
@@ -128,8 +117,7 @@ fun MoviePoster(
 
 @Composable
 fun MovieNoPoster(
-    movie: Movie,
-    modifier: Modifier = Modifier
+    movie: Movie, modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -139,12 +127,8 @@ fun MovieNoPoster(
             .fillMaxWidth()
     ) {
         Text(
-            text = if (movie.releaseDate.isNotEmpty())
-                "${movie.title} (${movie.releaseDate.slice(0..3)})"
-            else
-                movie.title,
-            textAlign = TextAlign.Center,
-            color = Color.White
+            text = if (movie.releaseDate.isNotEmpty()) "${movie.title} (${movie.releaseDate.slice(0..3)})"
+            else movie.title, textAlign = TextAlign.Center, color = Color.White
         )
     }
 }
