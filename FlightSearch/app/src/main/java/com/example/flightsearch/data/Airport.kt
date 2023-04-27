@@ -1,5 +1,6 @@
 package com.example.flightsearch.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -7,7 +8,8 @@ import androidx.room.PrimaryKey
 data class Airport(
     @PrimaryKey
     val id: Int,
-    val iata_code: String,
+    @ColumnInfo(name = "iata_code")
+    val iataCode: String,
     val name: String,
     val passengers: Int
 )
