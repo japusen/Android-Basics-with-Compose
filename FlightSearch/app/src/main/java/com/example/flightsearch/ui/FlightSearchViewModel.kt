@@ -22,7 +22,13 @@ class FlightSearchViewModel(
 
     fun getFavorites(): Flow<List<Favorite>> = favoriteDao.getFavorites()
 
-    suspend fun addFavorite(departureCode: String, destinationCode: String) = favoriteDao.insert(departureCode, destinationCode)
+    suspend fun addFavorite(departureCode: String, destinationCode: String) {
+        val favorite = Favorite(0, departureCode, destinationCode)
+        favoriteDao.insert(favorite)
+    }
+
+
+
 
     companion object {
         val factory : ViewModelProvider.Factory = viewModelFactory {

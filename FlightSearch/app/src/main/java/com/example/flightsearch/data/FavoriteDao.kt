@@ -16,5 +16,5 @@ interface FavoriteDao {
         entity = Favorite::class,
         onConflict = OnConflictStrategy.IGNORE
     )
-    suspend fun insert(departureCode: String, destinationCode: String)
+    suspend fun insert(favorite: Favorite)
 }
