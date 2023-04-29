@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AirportDao {
 
+    @Query("SELECT * FROM Airport WHERE iata_code = :iataCode")
+    fun getAirport(iataCode: String): Flow<Airport>
+
     @Query("SELECT * FROM Airport")
     fun getAirports(): Flow<List<Airport>>
 

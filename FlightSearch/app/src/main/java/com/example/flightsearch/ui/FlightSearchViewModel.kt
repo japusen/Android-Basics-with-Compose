@@ -1,5 +1,6 @@
 package com.example.flightsearch.ui
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
@@ -16,6 +17,10 @@ class FlightSearchViewModel(
     private val favoriteDao: FavoriteDao
 ) : ViewModel() {
 
+    val depart = mutableStateOf("")
+    val query = mutableStateOf("")
+
+    fun getAirport(iataCode: String): Flow<Airport> = airportDao.getAirport(iataCode)
     fun getFlightsFrom(iataCode: String): Flow<List<Airport>> = airportDao.getFlights(iataCode)
 
     fun getAutoCompleteResults(query: String): Flow<List<Airport>> = airportDao.getAutoComplete(query)
