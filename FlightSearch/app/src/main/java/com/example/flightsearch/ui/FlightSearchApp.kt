@@ -67,6 +67,7 @@ fun FlightSearchApp(
                         airports = airports,
                         onSelected = { airport ->
                             viewModel.depart.value = airport.iataCode
+                            viewModel.saveSearch(airport.iataCode)
                         }
                     )
                 } else {
