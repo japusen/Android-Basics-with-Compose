@@ -59,6 +59,10 @@ class BlurViewModel(private val bluromaticRepository: BluromaticRepository) : Vi
             initialValue = BlurUiState.Default
         )
 
+    fun cancelWork() {
+        bluromaticRepository.cancelWork()
+    }
+
     /**
      * Call the method from repository to create the WorkRequest to apply the blur
      * and save the resulting image
