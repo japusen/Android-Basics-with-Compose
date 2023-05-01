@@ -23,13 +23,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
@@ -42,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -92,7 +96,9 @@ fun BluromaticScreenContent(
         BlurActions(
             blurUiState = blurUiState,
             onGoClick = { applyBlur(selectedValue) },
-            onSeeFileClick = {},
+            onSeeFileClick = { currentUri ->
+                showBlurredImage(context, currentUri)
+            },
             onCancelClick = { cancelWork() }
         )
     }
@@ -110,7 +116,22 @@ private fun BlurActions(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        Button(onGoClick) { Text(stringResource(R.string.go)) }
+        when (blurUiState) {
+            is BlurUiState.Default -> {
+                Button(onGoClick) { Text(stringResource(R.string.go)) }
+            }
+            is BlurUiState.Loading -> {
+                Button(onCancelClick) { Text(stringResource(R.string.cancel_work)) }
+                CircularProgressIndicator(modifier = modifier.padding(8.dp))
+            }
+            is BlurUiState.Complete -> {
+                Button(onGoClick) { Text(stringResource(R.string.go)) }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button({ onSeeFileClick(blurUiState.outputUri) }) {
+                    Text(stringResource(R.string.see_file))
+                }
+            }
+        }
     }
 }
 
