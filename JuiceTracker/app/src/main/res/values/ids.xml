@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="guideline_left_indent" type="id">guideline_left_indent</item>
+    <item name="guideline_end_of_first_block" type="id">guideline_end_of_first_block</item>
+    <item name="guideline_right" type="id">guideline_right</item>
+    <item name="divider" type="id">divider</item>
+    <item name="desciption" type="id">desciption</item>
+    <item name="color_spinner" type="id">color_spinner</item>
+    <item name="saveButton" type="id">saveButton</item>
+    <item name="cancelButton" type="id">cancelButton</item>
+</resources>

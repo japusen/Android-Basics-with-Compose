@@ -46,7 +46,9 @@ class TrackerFragment : Fragment() {
 
     private val adapter = JuiceListAdapter(
         onEdit = { drink ->
-
+            findNavController().navigate(
+                TrackerFragmentDirections.actionTrackerFragmentToEntryDialogFragment(drink.id)
+            )
         },
         onDelete = { drink ->
             viewModel.deleteJuice(drink)
@@ -58,7 +60,9 @@ class TrackerFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         binding.fab.setOnClickListener { fabView ->
-
+            fabView.findNavController().navigate(
+                TrackerFragmentDirections.actionTrackerFragmentToEntryDialogFragment()
+            )
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
