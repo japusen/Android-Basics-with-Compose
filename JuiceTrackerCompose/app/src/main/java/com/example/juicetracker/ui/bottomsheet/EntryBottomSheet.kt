@@ -15,6 +15,7 @@
  */
 package com.example.juicetracker.ui.bottomsheet
 
+import RatingInputRow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -108,6 +109,16 @@ fun SheetForm(
             inputLabel = stringResource(R.string.juice_description),
             fieldValue = juice.description,
             onValueChange = { description -> onUpdateJuice(juice.copy(description = description)) }
+        )
+        ColorSpinnerRow(
+            colorSpinnerPosition = JuiceColor.valueOf(juice.color).ordinal,
+            onColorChange = { color ->
+                onUpdateJuice(juice.copy(color = JuiceColor.values()[color].name))
+            }
+        )
+        RatingInputRow(
+            rating = juice.rating,
+            onRatingChanged = { rating -> onUpdateJuice(juice.copy(rating = rating))}
         )
         ButtonRow(
             modifier = Modifier.align(Alignment.CenterHorizontally),

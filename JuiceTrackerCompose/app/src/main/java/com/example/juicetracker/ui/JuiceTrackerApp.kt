@@ -15,6 +15,7 @@
  */
 package com.example.juicetracker.ui
 
+import AdBanner
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -26,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.juicetracker.ui.bottomsheet.EntryBottomSheet
 import com.example.juicetracker.ui.homescreen.JuiceTrackerFAB
@@ -77,6 +79,7 @@ fun JuiceTrackerApp(
             }
         ) { contentPadding ->
             Column(Modifier.padding(contentPadding)) {
+                AdBanner(modifier.padding(top = 16.dp))
                 JuiceTrackerList(
                     juices = trackerState,
                     onDelete = { juice -> juiceTrackerViewModel.deleteJuice(juice) },
