@@ -31,7 +31,8 @@ fun GridAndDetail(
     ) {
         Row {
             MovieGridScreen(
-                uiState = uiState,
+                isShowingSearchTab = uiState.isShowingSearchTab,
+                query = uiState.query,
                 movieList = movieList,
                 gridState = gridState,
                 onMovieCardPressed = onMovieCardPressed,
@@ -62,7 +63,6 @@ fun GridOnly(
     onDetailScreenBackPressed: () -> Unit,
     onSearchTextChange: (String) -> Unit,
     onSearch: () -> Unit,
-    bottomPadding: Dp,
     modifier: Modifier = Modifier
 ) {
 
@@ -71,12 +71,8 @@ fun GridOnly(
     ) {
         AnimatedVisibility(
             visible = uiState.isShowingMovieDetail,
-            enter = fadeIn() + slideInHorizontally { fullWidth ->
-                -fullWidth/2
-            },
-            exit = fadeOut() + slideOutHorizontally { fullWidth ->
-                -fullWidth/2
-            },
+            enter = fadeIn() + slideInHorizontally { fullWidth -> -fullWidth/2 },
+            exit = fadeOut() + slideOutHorizontally { fullWidth -> -fullWidth/2 },
         ) {
             BackHandler {
                 onDetailScreenBackPressed()
@@ -87,7 +83,6 @@ fun GridOnly(
                     movie = uiState.selectedMovie,
                     onBackPressed = onDetailScreenBackPressed,
                     isFullScreen = true,
-                    bottomPadding = bottomPadding
                 )
             }
         }
@@ -98,7 +93,8 @@ fun GridOnly(
             exit = fadeOut()
         )  {
             MovieGridScreen(
-                uiState = uiState,
+                isShowingSearchTab = uiState.isShowingSearchTab,
+                query = uiState.query,
                 movieList = movieList,
                 gridState = gridState,
                 onMovieCardPressed = onMovieCardPressed,

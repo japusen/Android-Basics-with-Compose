@@ -20,12 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.example.movies.ui.screens.MoviesUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
-    uiState: MoviesUiState,
+    isShowingSearchTab: Boolean,
+    query: String,
     onSearchTextChange: (String) -> Unit,
     onSearch: () -> Unit,
     modifier: Modifier = Modifier
@@ -41,9 +41,9 @@ fun SearchBar(
             .fillMaxWidth()
             .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
     ) {
-        AnimatedVisibility(visible = uiState.isShowingSearchTab) {
+        AnimatedVisibility(visible = isShowingSearchTab) {
             TextField(
-                value = uiState.query,
+                value = query,
                 onValueChange = { onSearchTextChange(it) },
                 placeholder = {
                     Text(text = "Search for movies")

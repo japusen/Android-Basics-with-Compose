@@ -29,45 +29,16 @@ fun MoviesApp(
 
     val gridState = rememberLazyGridState()
 
-    val onMovieCardPressed = { movie: Movie ->
-        moviesViewModel.setCurrentMovie(movie)
-        moviesViewModel.setIsShowingMovieDetail(true)
-    }
-
     val onTabPressed = { num: Int ->
         if (num != uiState.selectedTab) {
             moviesViewModel.setSelectedTab(num)
+            moviesViewModel.setCurrentMovie(null)
+            moviesViewModel.setIsShowingMovieDetail(false)
             when (num) {
-                TAB.TOP_RATED.num -> {
-                    moviesViewModel.setCurrentMovie(null)
-                    moviesViewModel.setIsShowingMovieDetail(false)
-                    moviesViewModel.setIsShowingSearchTab(false)
-                }
-                TAB.POPULAR.num -> {
-                    moviesViewModel.setCurrentMovie(null)
-                    moviesViewModel.setIsShowingMovieDetail(false)
-                    moviesViewModel.setIsShowingSearchTab(false)
-                }
-                TAB.SEARCH.num -> {
-                    moviesViewModel.setCurrentMovie(null)
-                    moviesViewModel.setIsShowingMovieDetail(false)
-                    moviesViewModel.setIsShowingSearchTab(true)
-                }
+                TAB.SEARCH.num -> moviesViewModel.setIsShowingSearchTab(true)
+                else -> moviesViewModel.setIsShowingSearchTab(false)
             }
         }
-    }
-
-    val onDetailScreenBackPressed = {
-        moviesViewModel.setIsShowingMovieDetail(false)
-    }
-
-    val onSearchTextChange = { query: String ->
-        moviesViewModel.updateQuery(query)
-    }
-
-    val onSearch = {
-        moviesViewModel.searchForMovie()
-        moviesViewModel.setCurrentMovie(null)
     }
 
     val navigationType: NavigationType
@@ -98,10 +69,20 @@ fun MoviesApp(
         uiState = uiState,
         movieList = movieList,
         gridState = gridState,
-        onMovieCardPressed = onMovieCardPressed,
-        onDetailScreenBackPressed = onDetailScreenBackPressed,
+        onMovieCardPressed = { movie: Movie ->
+            moviesViewModel.setCurrentMovie(movie)
+            moviesViewModel.setIsShowingMovieDetail(true)
+        },
+        onDetailScreenBackPressed = {
+            moviesViewModel.setIsShowingMovieDetail(false)
+        },
         onTabPressed = onTabPressed,
-        onSearchTextChange = onSearchTextChange,
-        onSearch = onSearch
+        onSearchTextChange = { query: String ->
+            moviesViewModel.updateQuery(query)
+        },
+        onSearch = {
+            moviesViewModel.searchForMovie()
+            moviesViewModel.setCurrentMovie(null)
+        }
     )
 }

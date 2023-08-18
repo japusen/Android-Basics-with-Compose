@@ -34,37 +34,47 @@ fun HomeScreen(
     onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val navigationItemContentList = listOf<NavigationItemContent>(NavigationItemContent(
-        text = "Top Rated",
-        icon = Icons.Default.Star,
-        tab = TAB.TOP_RATED,
-        onTabPressed = { onTabPressed(TAB.TOP_RATED.num) },
-    ), NavigationItemContent(text = "Popular",
-        icon = Icons.Default.Favorite,
-        tab = TAB.POPULAR,
-        onTabPressed = { onTabPressed(TAB.POPULAR.num) }), NavigationItemContent(text = "Search",
-        icon = Icons.Default.Search,
-        tab = TAB.SEARCH,
-        onTabPressed = { onTabPressed(TAB.SEARCH.num) }))
+    val navigationItemContentList = listOf(
+        NavigationItemContent(
+            text = "Top Rated",
+            icon = Icons.Default.Star,
+            tab = TAB.TOP_RATED,
+            onTabPressed = { onTabPressed(TAB.TOP_RATED.num) },
+            ),
+        NavigationItemContent(
+            text = "Popular",
+            icon = Icons.Default.Favorite,
+            tab = TAB.POPULAR,
+            onTabPressed = { onTabPressed(TAB.POPULAR.num) }
+        ),
+        NavigationItemContent(
+            text = "Search",
+            icon = Icons.Default.Search,
+            tab = TAB.SEARCH,
+            onTabPressed = { onTabPressed(TAB.SEARCH.num) }
+        )
+    )
 
     if (navigationType == NavigationType.PERMANENT_NAVIGATION_DRAWER) {
-        PermanentNavigationDrawer(drawerContent = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Movies",
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-                PermanentDrawerSheet(modifier.width(175.dp)) {
-                    MoviesNavDrawerContent(
-                        uiState = uiState,
-                        navigationItemContentList = navigationItemContentList,
+        PermanentNavigationDrawer(
+            drawerContent = {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Movies",
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.padding(bottom = 16.dp)
                     )
+                    PermanentDrawerSheet(modifier.width(175.dp)) {
+                        MoviesNavDrawerContent(
+                            selectedTab = uiState.selectedTab,
+                            navigationItemContentList = navigationItemContentList,
+                        )
+                    }
                 }
             }
-        }) {
+        ) {
             AppContent(
                 navigationType = navigationType,
                 contentType = contentType,
@@ -115,14 +125,16 @@ private fun AppContent(
     Row(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
             MoviesNavRail(
-                uiState = uiState, navigationItemContentList = navigationItemContentList
+                selectedTab = uiState.selectedTab,
+                navigationItemContentList = navigationItemContentList
             )
         }
         Scaffold(
             bottomBar = {
                 AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
                     MoviesBottomNavBar(
-                        uiState = uiState, navigationItemContentList = navigationItemContentList
+                        selectedTab = uiState.selectedTab,
+                        navigationItemContentList = navigationItemContentList
                     )
                 }
             },
@@ -137,7 +149,8 @@ private fun AppContent(
                     gridState = gridState,
                     onMovieCardPressed = onMovieCardPressed,
                     onSearchTextChange = onSearchTextChange,
-                    onSearch = onSearch
+                    onSearch = onSearch,
+                    modifier = Modifier.padding(paddingValues = padding)
                 )
             } else {
                 GridOnly(
@@ -148,8 +161,7 @@ private fun AppContent(
                     onDetailScreenBackPressed = onDetailScreenBackPressed,
                     onSearchTextChange = onSearchTextChange,
                     onSearch = onSearch,
-                    bottomPadding = if (navigationType == NavigationType.BOTTOM_NAVIGATION) padding.calculateBottomPadding()
-                    else 0.dp
+                    modifier = Modifier.padding(paddingValues = padding)
                 )
             }
         }

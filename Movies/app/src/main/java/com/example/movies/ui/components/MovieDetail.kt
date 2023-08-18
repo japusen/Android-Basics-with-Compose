@@ -1,12 +1,21 @@
 package com.example.movies.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -33,14 +41,13 @@ fun MovieDetail(
     movie: Movie?,
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {},
-    bottomPadding: Dp = 0.dp,
     isFullScreen: Boolean = false
 ) {
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .fillMaxHeight()
-            .padding(top = 8.dp, bottom = bottomPadding)
+            .padding(top = 8.dp)
     ) {
         OutlinedCard(
             modifier = modifier
@@ -49,7 +56,7 @@ fun MovieDetail(
         ) {
             if (movie != null) {
                 Column {
-                    if (movie.backdrop_path != null) {
+                    if (movie.backdropPath != null) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
@@ -58,7 +65,7 @@ fun MovieDetail(
                         ) {
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.backdrop_path}")
+                                    .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.backdropPath}")
                                     .crossfade(true)
                                     .build(),
                                 error = painterResource(R.drawable.ic_broken_image),
@@ -75,14 +82,14 @@ fun MovieDetail(
                             "${movie.title} (${movie.releaseDate.slice(0..3)})"
                         else
                             movie.title,
-                        style = MaterialTheme.typography.headlineLarge,
+                        style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp)
                     )
 
                     Text(
                         text = if (movie.overview != "") movie.overview else "No description available.",
                         textAlign = TextAlign.Justify,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(
                             top = 8.dp,
                             bottom = 4.dp,

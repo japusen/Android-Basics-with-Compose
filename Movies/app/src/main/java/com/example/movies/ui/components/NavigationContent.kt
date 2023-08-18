@@ -5,19 +5,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.movies.ui.screens.MoviesUiState
 import com.example.movies.ui.screens.TAB
 
 @Composable
 fun MoviesBottomNavBar(
-    uiState: MoviesUiState,
+    selectedTab: Int,
     navigationItemContentList: List<NavigationItemContent>,
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
         for (navItem in navigationItemContentList) {
             NavigationBarItem(
                 label = { Text(navItem.text) },
-                selected = uiState.selectedTab == navItem.tab.num,
+                selected = selectedTab == navItem.tab.num,
                 onClick = { navItem.onTabPressed() },
                 icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.text) },
             )
@@ -27,7 +26,7 @@ fun MoviesBottomNavBar(
 
 @Composable
 fun MoviesNavRail(
-    uiState: MoviesUiState,
+    selectedTab: Int,
     navigationItemContentList: List<NavigationItemContent>,
 ) {
     NavigationRail(
@@ -42,7 +41,7 @@ fun MoviesNavRail(
         for (navItem in navigationItemContentList) {
             NavigationRailItem(
                 label = { Text(navItem.text) },
-                selected = uiState.selectedTab == navItem.tab.num,
+                selected = selectedTab == navItem.tab.num,
                 onClick = { navItem.onTabPressed() },
                 icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.text) },
             )
@@ -53,13 +52,13 @@ fun MoviesNavRail(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesNavDrawerContent(
-    uiState: MoviesUiState,
+    selectedTab: Int,
     navigationItemContentList: List<NavigationItemContent>,
 ) {
     for (navItem in navigationItemContentList) {
         NavigationDrawerItem(
             label = { Text(navItem.text) },
-            selected = uiState.selectedTab == navItem.tab.num,
+            selected = selectedTab == navItem.tab.num,
             onClick = { navItem.onTabPressed() },
             icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.text) },
         )

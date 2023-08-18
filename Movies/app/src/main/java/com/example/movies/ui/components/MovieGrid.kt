@@ -20,7 +20,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movies.R
 import com.example.movies.model.Movie
-import com.example.movies.ui.screens.MoviesUiState
 
 // Configuration: https://developers.themoviedb.org/3/configuration/get-api-configuration
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
@@ -28,7 +27,8 @@ private const val IMAGE_SIZE = "w780"
 
 @Composable
 fun MovieGridScreen(
-    uiState: MoviesUiState,
+    isShowingSearchTab: Boolean,
+    query: String,
     movieList: LazyPagingItems<Movie>?,
     gridState: LazyGridState,
     onMovieCardPressed: (Movie) -> Unit,
@@ -45,7 +45,10 @@ fun MovieGridScreen(
     ) {
 
         SearchBar(
-            uiState = uiState, onSearchTextChange = onSearchTextChange, onSearch = onSearch
+            isShowingSearchTab = isShowingSearchTab,
+            query = query,
+            onSearchTextChange = onSearchTextChange,
+            onSearch = onSearch
         )
 
         MovieGrid(
@@ -86,30 +89,41 @@ fun MovieGrid(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieCard(
-    movie: Movie, onMovieCardPressed: (Movie) -> Unit, modifier: Modifier = Modifier
+    movie: Movie,
+    onMovieCardPressed: (Movie) -> Unit,
 ) {
     Card(onClick = { onMovieCardPressed(movie) }) {
         if (movie.posterPath != null) {
-            MoviePoster(movie)
+            MoviePoster(
+                posterPath = movie.posterPath,
+                title = movie.title
+            )
         } else {
-            MovieNoPoster(movie, modifier)
+            MovieNoPoster(
+                title = movie.title,
+                releaseDate = movie.releaseDate
+            )
         }
     }
 }
 
 @Composable
 fun MoviePoster(
-    movie: Movie, modifier: Modifier = Modifier
+    posterPath: String?,
+    title: String,
+    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center, modifier = modifier.height(256.dp)
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data("$IMAGE_BASE_URL$IMAGE_SIZE${movie.posterPath}").crossfade(true).build(),
+                .data("$IMAGE_BASE_URL$IMAGE_SIZE${posterPath}")
+                .crossfade(true)
+                .build(),
             error = painterResource(R.drawable.ic_broken_image),
             placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = movie.title,
+            contentDescription = title,
             contentScale = ContentScale.FillBounds,
         )
     }
@@ -117,7 +131,9 @@ fun MoviePoster(
 
 @Composable
 fun MovieNoPoster(
-    movie: Movie, modifier: Modifier = Modifier
+    title: String,
+    releaseDate: String,
+    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -127,8 +143,10 @@ fun MovieNoPoster(
             .fillMaxWidth()
     ) {
         Text(
-            text = if (movie.releaseDate.isNotEmpty()) "${movie.title} (${movie.releaseDate.slice(0..3)})"
-            else movie.title, textAlign = TextAlign.Center, color = Color.White
+            text = if (releaseDate.isNotEmpty()) "$title (${releaseDate.slice(0..3)})"
+            else title,
+            textAlign = TextAlign.Center,
+            color = Color.White
         )
     }
 }
